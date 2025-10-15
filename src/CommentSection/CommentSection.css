@@ -9,12 +9,6 @@
   grid-template-rows: auto auto;
 }
 
-.reply-container {
-  display: grid;
-  grid-column: 2 / 2;
-  grid-row: 2 / 2;
-}
-
 .line {
   width: 1px;
   background-color: var(--grey-100);

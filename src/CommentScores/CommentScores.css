@@ -1,4 +1,6 @@
 .score-container {
+  grid-column: 1 / 2;
+  grid-row: 1 / 3;
   display: flex;
   flex-direction: column;
   margin-right: 20px;
