@@ -1,90 +1,84 @@
-import DeleteModal from "./DeleteModal";
+import CommentVotes from "./CommentVotes";
 
 const Comment = ({
-  score,
   data,
   currentUser,
   onDelete,
   onScoreChange,
-  commentRated,
+  commentRating,
 }) => {
+  const isCurrentUser = data.user.username === currentUser;
+
   // Add @ if it's a reply
-  let answerTo = "";
-  if (data.replyingTo) {
-    answerTo = (
-      <a href="#" className="replyingTo">
-        {"@" + data.replyingTo + " "}
-      </a>
-    );
-  }
+  const isReplying = (replyingTo) => {
+    if (replyingTo) {
+      return (
+        <a href="#" className="replyingTo">
+          {"@" + data.replyingTo + " "}
+        </a>
+      );
+    }
+  };
 
-  let currentUserIndicator = "";
-  let userButtons = (
-    <button className="reply-btn">
-      <img src="/assets/images/icon-reply.svg" />
-      Reply
-    </button>
-  );
+  // Add current user indicator
+  const currentUserIndicator = (isCurrentUser) => {
+    if (isCurrentUser) {
+      return (
+        <div className="current-user-indicator">
+          <span>you</span>
+        </div>
+      );
+    }
+  };
 
-  if (data.user.username === currentUser) {
-    // Add current user indicator
-    currentUserIndicator = (
-      <div className="current-user-indicator">
-        <span>you</span>
-      </div>
-    );
-
-    // Use different buttons if the current comment is made by the current user
-    userButtons = (
-      <div className="current-user-btns">
-        <button className="delete-btn" onClick={onDelete}>
-          <img src="/assets/images/icon-delete.svg" />
-          Delete
+  // Use different buttons if the current comment is made by the current user
+  // "Reply" for others and "delete" and "edit" for current user
+  const userButtons = (isCurrentUser) => {
+    if (!isCurrentUser) {
+      return (
+        <button className="btn-base reply-btn gray-hover">
+          <img className="btn-base-icon" src="/assets/images/icon-reply.svg" />
+          Reply
         </button>
-        <button className="edit-btn">
-          <img src="/assets/images/icon-edit.svg" />
-          Edit
-        </button>
-      </div>
-    );
-  }
+      );
+    } else {
+      return (
+        <div className="current-user-btns">
+          <button className="btn-base delete-btn gray-hover" onClick={onDelete}>
+            <img
+              className="btn-base-icon"
+              src="/assets/images/icon-delete.svg"
+            />
+            Delete
+          </button>
+          <button className="btn-base edit-btn gray-hover">
+            <img className="btn-base-icon" src="/assets/images/icon-edit.svg" />
+            Edit
+          </button>
+        </div>
+      );
+    }
+  };
 
   return (
-    <div className="comment">
-      <div className="vote-container">
-        <button
-          className="upvote-btn"
-          onClick={() => onScoreChange(data.id, "upvote")}
-        >
-          <img
-            className={commentRated === "upvote" ? "score-img-purple" : ""}
-            src="/assets/images/icon-plus.svg"
-          />
-        </button>
-        <div className="comment-score">
-          <span>{score}</span>
-        </div>
-        <button
-          className="downvote-btn"
-          onClick={() => onScoreChange(data.id, "downvote")}
-        >
-          <img
-            className={commentRated === "downvote" ? "score-img-purple" : ""}
-            src="/assets/images/icon-minus.svg"
-          />
-        </button>
-      </div>
-
+    <div className="comment-base">
+      <CommentVotes
+        score={data.score}
+        id={data.id}
+        onScoreChange={onScoreChange}
+        isCurrentUser={isCurrentUser}
+        commentRating={commentRating}
+      />
       <div>
         <div className="comment-top-row">
           <img className="avatar" src={data.user.image.png}></img>
           <p className="username">{data.user.username}</p>
-          {currentUserIndicator}
+          {currentUserIndicator(isCurrentUser)}
           <p className="created-at">{data.createdAt}</p>
-          {userButtons}
+          {userButtons(isCurrentUser)}
         </div>
         <p>
-          {answerTo}
+          {isReplying(data.replyingTo)}
           {data.content}
         </p>
       </div>
