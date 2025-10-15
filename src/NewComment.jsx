@@ -7,7 +7,7 @@ const NewComment = ({ id, image, createNewComment, isReplying }) => {
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData.entries());
 
-    if (data.newCommentInput !== "") {
+    if (data.newCommentTextarea !== "") {
       createNewComment(data.newCommentTextarea, id);
       event.target.reset();
     }
