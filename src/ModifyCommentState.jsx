@@ -71,7 +71,7 @@ const calculateNewScore = (isCommentRated, id, action, score) => {
   }
 };
 
-const changeCommentState = (comments, id, action, isCommentRated) => {
+const changeCommentState = (comments, id, action, isCommentRated, input) => {
   // Entries() because it doesn't work without it (if array has objects in it)
   for (const [index, el] of comments.entries()) {
     if (el.id === id) {
@@ -132,6 +132,9 @@ const changeCommentState = (comments, id, action, isCommentRated) => {
             newComment.newComment = true;
 
             newComments[parentIndex].replies.splice(index + 1, 0, newComment);
+          } else if (action === "amend_new") {
+            delete newComments[parentIndex].replies[index].newComment;
+            newComments[parentIndex].replies[index].content = input;
           }
           return newComments;
         }

@@ -1,4 +1,4 @@
-const NewComment = ({ image, createNewComment, isReplying }) => {
+const NewComment = ({ id, image, createNewComment, isReplying }) => {
   const handleFormSubmit = (event) => {
     event.preventDefault();
 
@@ -6,7 +6,7 @@ const NewComment = ({ image, createNewComment, isReplying }) => {
     const data = Object.fromEntries(formData.entries());
 
     if (data.newCommentInput !== "") {
-      createNewComment(data.newCommentInput);
+      createNewComment(data.newCommentInput, id);
       event.target.reset();
     }
   };

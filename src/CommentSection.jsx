@@ -40,12 +40,17 @@ const CommentSection = () => {
     setIsCommentRated(newRatings);
   };
 
-  const handleNewComment = (inputData) => {
-    const newComment = new UserComment(comments, inputData);
-
-    const newComments = [...comments];
-    newComments.push(newComment);
-    setComments(newComments);
+  const handleNewComment = (inputData, id) => {
+    if (id === 0) {
+      const newComment = new UserComment(comments, inputData);
+      const newComments = [...comments];
+      newComments.push(newComment);
+      setComments(newComments);
+    } else {
+      setComments(
+        changeCommentState(prevState, id, "amend_new", "", inputData),
+      );
+    }
   };
 
   const handleReply = (id) => {
@@ -91,6 +96,7 @@ const CommentSection = () => {
                     return (
                       <NewComment
                         key={el.id}
+                        id={el.id}
                         image={currentUser.image}
                         createNewComment={handleNewComment}
                         isReplying={true}
@@ -104,6 +110,7 @@ const CommentSection = () => {
         </div>
       ))}
       <NewComment
+        id={0}
         image={currentUser.image}
         createNewComment={handleNewComment}
         isReplying={false}
