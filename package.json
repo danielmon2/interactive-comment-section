@@ -12,7 +12,7 @@
     "format": "prettier --write \"src/**/*.{js,jsx,css,html}\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Daniel Nasonov",
+  "author": "Daniel",
   "license": "ISC",
   "devDependencies": {
     "@vitejs/plugin-react": "^5.0.2",
