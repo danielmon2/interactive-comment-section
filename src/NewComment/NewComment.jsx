@@ -15,17 +15,17 @@ const NewComment = ({ id, image, createNewComment, isReplying }) => {
   };
 
   return (
-    <form onSubmit={handleFormSubmit} className="comment-base new-comment">
-      <img className="new-comment-avatar" src={image.png}></img>
+    <form onSubmit={handleFormSubmit} className="comment">
+      <img className="comment--new__avatar" src={image.png}></img>
       <ResponsiveTextarea
         defaultValue={""}
         autoFocus={isReplying}
         name={"newCommentTextarea"}
         placeholder={"Add a comment..."}
-        className={"new-comment-textarea"}
+        className={"comment--new__textarea"}
         minTextareaHeight={80}
       />
-      <button type="submit" className="btn-base send-btn">
+      <button type="submit" className="btn comment__btn btn--send">
         SEND
       </button>
     </form>

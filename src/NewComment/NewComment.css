@@ -1,35 +1,26 @@
-.new-comment-avatar {
+.comment--new__avatar {
   width: 35px;
   height: 35px;
 }
 
-.base-textarea {
-  width: 100%;
-  border: 1px solid var(--grey-100);
-  border-radius: 8px;
-  padding: 8px 15px;
-  resize: none;
-}
-
-.new-comment-textarea {
+.comment--new__textarea {
+  width: 35px;
   height: 80px;
   margin: 0 10px;
 }
 
-.new-comment-input::placeholder {
+.comment--new__textarea::placeholder {
   color: var(--grey-500);
 }
 
-.send-btn {
+.btn--send {
   width: 100px;
   height: 35px;
-  /* background-color: var(--purple-600); */
-  /* background-color: var(--grey-100); */
-  background-color: black;
+  background-color: var(--purple-600);
   font-size: 0.8rem;
   color: white;
 }
 
-.send-btn:hover {
+.btn--send:hover {
   background-color: var(--purple-800);
 }
