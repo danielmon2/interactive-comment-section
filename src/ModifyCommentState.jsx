@@ -71,33 +71,21 @@ const calculateNewScore = (isCommentRated, id, action, score) => {
   }
 };
 
-const changeCommentState = (comments, id, action, isCommentRated, input) => {
+const changeCommentScore = (comments, id, action, isCommentRated) => {
   // Entries() because it doesn't work without it (if array has objects in it)
   for (const [index, el] of comments.entries()) {
     if (el.id === id) {
       const newComments = [...comments];
       newComments[index] = { ...comments[index] };
 
-      if (action === "upvote" || action === "downvote") {
-        const [newScore, newRatings] = calculateNewScore(
-          isCommentRated,
-          id,
-          action,
-          newComments[index].score,
-        );
-        newComments[index].score = newScore;
-        return [newRatings, newComments];
-      } else if (action === "edit") {
-        // if (newComments[index].editing) {
-        //   delete newComments[index].editing;
-        // } else {
-        newComments[index].editing = true;
-        // }
-      } else if (action === "update") {
-        delete newComments[index].editing;
-        newComments[index].content = input;
-      }
-      return newComments;
+      const [newScore, newRatings] = calculateNewScore(
+        isCommentRated,
+        id,
+        action,
+        newComments[index].score,
+      );
+      newComments[index].score = newScore;
+      return [newRatings, newComments];
     }
     if (el.replies.length !== 0) {
       const parentIndex = index;
@@ -109,7 +97,7 @@ const changeCommentState = (comments, id, action, isCommentRated, input) => {
           // If you want to change something inside one you have to copy it (if you want to replace it you don't)
           // I make a shallow copy of each layer I go down
           // Comments array -> specific comment object -> array of all replies of that comment -> specific reply object
-          // I'm assuming this will be faster then a deep copy, because here you copy only necessary items
+          // I'm assuming this will be faster than a deep copy, because here you copy only necessary items
           const newComments = [...comments];
           newComments[parentIndex] = { ...comments[parentIndex] };
           newComments[parentIndex].replies = [...comments[parentIndex].replies];
@@ -117,26 +105,14 @@ const changeCommentState = (comments, id, action, isCommentRated, input) => {
             ...comments[parentIndex].replies[index],
           };
 
-          if (action === "upvote" || action === "downvote") {
-            const [newScore, newRatings] = calculateNewScore(
-              isCommentRated,
-              id,
-              action,
-              newComments[parentIndex].replies[index].score,
-            );
-            newComments[parentIndex].replies[index].score = newScore;
-            return [newRatings, newComments];
-          } else if (action === "edit") {
-            // if (newComments[parentIndex].replies[index].editing === true) {
-            //   delete newComments[parentIndex].replies[index].editing;
-            // } else {
-            newComments[parentIndex].replies[index].editing = true;
-            // }
-          } else if (action === "update") {
-            delete newComments[parentIndex].replies[index].editing;
-            newComments[parentIndex].replies[index].content = input;
-          }
-          return newComments;
+          const [newScore, newRatings] = calculateNewScore(
+            isCommentRated,
+            id,
+            action,
+            newComments[parentIndex].replies[index].score,
+          );
+          newComments[parentIndex].replies[index].score = newScore;
+          return [newRatings, newComments];
         }
       }
     }
@@ -195,6 +171,94 @@ const createReplyForm = (comments, id) => {
 
           // Insert it immidiately after comment you're replying to in the "replies" array
           newComments[parentIndex].replies.splice(index + 1, 0, newComment);
+
+          return newComments;
+        }
+      }
+    }
+  }
+
+  console.log("No such id");
+  return comments;
+};
+
+const updateComment = (comments, id, inputData) => {
+  // Go through all comments to find a comment you're replying to
+  for (const [index, el] of comments.entries()) {
+    if (el.id === id) {
+      // Copy up to our id
+      const newComments = [...comments];
+      newComments[index] = { ...comments[index] };
+
+      // Delete editing form indicator
+      delete newComments[index].editing;
+      // Change contents
+      newComments[index].content = inputData;
+
+      return newComments;
+    }
+
+    // Go through all replies
+    if (el.replies.length !== 0) {
+      const parentEl = el.replies;
+      const parentIndex = index;
+
+      for (const [index, el] of parentEl.entries()) {
+        if (el.id === id) {
+          // Copy
+          const newComments = [...comments];
+          newComments[parentIndex] = { ...comments[parentIndex] };
+          newComments[parentIndex].replies = [...comments[parentIndex].replies];
+          newComments[parentIndex].replies[index] = {
+            ...comments[parentIndex].replies[index],
+          };
+
+          // Delete editing form indicator
+          delete newComments[parentIndex].replies[index].editing;
+          // Change contents
+          newComments[parentIndex].replies[index].content = inputData;
+
+          return newComments;
+        }
+      }
+    }
+  }
+
+  console.log("No such id");
+  return comments;
+};
+
+const createEditingForm = (comments, id) => {
+  // Go through all comments to find a comment you're replying to
+  for (const [index, el] of comments.entries()) {
+    if (el.id === id) {
+      // Copy up to our id
+      const newComments = [...comments];
+      newComments[index] = { ...comments[index] };
+
+      // Add "editing" property that will act as an indicator to create a form in place of this comment
+      newComments[index].editing = true;
+
+      return newComments;
+    }
+
+    // Go through all replies
+    if (el.replies.length !== 0) {
+      const parentEl = el.replies;
+      const parentIndex = index;
+
+      for (const [index, el] of parentEl.entries()) {
+        if (el.id === id) {
+          // Copy
+          const newComments = [...comments];
+          newComments[parentIndex] = { ...comments[parentIndex] };
+          newComments[parentIndex].replies = [...comments[parentIndex].replies];
+          newComments[parentIndex].replies[index] = {
+            ...comments[parentIndex].replies[index],
+          };
+
+          // Add "newComment" property
+          newComments[parentIndex].replies[index].editing = true;
 
           return newComments;
         }
@@ -375,13 +439,14 @@ const deleteEditingForm = (comments, id) => {
   return [comments, sameId];
 };
 
-export default changeCommentState;
+export default changeCommentScore;
 export {
-  getNewId,
   deleteReplyForm,
   deleteEditingForm,
   deleteComment,
   createComment,
   createReplyForm,
+  createEditingForm,
   createReply,
+  updateComment,
 };

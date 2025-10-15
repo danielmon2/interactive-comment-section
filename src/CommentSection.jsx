@@ -4,13 +4,15 @@ import Comment from "./Comment";
 import NewComment from "./NewComment";
 import { useState } from "react";
 import DeleteModal from "./DeleteModal";
-import changeCommentState, {
+import changeCommentScore, {
   deleteReplyForm,
   deleteEditingForm,
   deleteComment,
   createComment,
   createReplyForm,
+  createEditingForm,
   createReply,
+  updateComment,
 } from "./ModifyCommentState";
 
 const CommentSection = () => {
@@ -34,7 +36,7 @@ const CommentSection = () => {
   };
 
   const handleScoreChange = (id, action) => {
-    const [newRatings, newComments] = changeCommentState(
+    const [newRatings, newComments] = changeCommentScore(
       comments,
       id,
       action,
@@ -50,7 +52,7 @@ const CommentSection = () => {
       setComments(newComments);
       return;
     }
-    setComments(changeCommentState(newComments, id, "edit"));
+    setComments(createEditingForm(newComments, id));
   };
 
   const handleNewComment = (inputData, id) => {
@@ -71,7 +73,7 @@ const CommentSection = () => {
   };
 
   const handleEditedComment = (inputData, id) => {
-    setComments(changeCommentState(comments, id, "update", "", inputData));
+    setComments(updateComment(comments, id, inputData));
   };
 
   return (
