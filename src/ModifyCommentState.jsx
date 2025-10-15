@@ -90,7 +90,7 @@ const changeCommentState = (comments, id, action, isCommentRated, input) => {
         newComments[index].score = newScore;
         return [newRatings, newComments];
       } else if (action === "create_new") {
-        const newComment = new UserComment(comments, "");
+        const newComment = new UserReply(comments, "", el.user.username);
         newComment.newComment = true;
 
         newComments[index].replies = [...comments[index].replies];
