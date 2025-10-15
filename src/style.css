@@ -178,6 +178,14 @@ button {
   width: 12px;
 }
 
+.update-btn {
+  background-color: var(--purple-600);
+  color: white;
+  margin-left: auto;
+  display: block;
+  margin-top: 10px;
+}
+
 .reply-container {
   display: grid;
   grid-column: 2 / 2;

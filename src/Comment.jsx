@@ -1,4 +1,5 @@
 import CommentVotes from "./CommentVotes";
+import ResponsiveTextarea from "./EditingTextarea";
 
 const Comment = ({
   data,
@@ -6,6 +7,7 @@ const Comment = ({
   onReply,
   onDelete,
   onScoreChange,
+  onEdit,
   commentRating,
 }) => {
   const isCurrentUser = data.user.username === currentUser;
@@ -58,13 +60,20 @@ const Comment = ({
             />
             Delete
           </button>
-          <button className="btn-base edit-btn gray-hover">
+          <button
+            className="btn-base edit-btn gray-hover"
+            onClick={() => onEdit(data.id)}
+          >
             <img className="btn-base-icon" src="/assets/images/icon-edit.svg" />
             Edit
           </button>
         </div>
       );
     }
+  };
+
+  const handleEditSubmit = (event) => {
+    event.preventDefault();
   };
 
   return (
@@ -84,10 +93,24 @@ const Comment = ({
           <p className="created-at">{data.createdAt}</p>
           {userButtons(isCurrentUser)}
         </div>
-        <p className="content">
-          {isReplying(data.replyingTo)}
-          {data.content}
-        </p>
+        {data.editing ? (
+          <form onSubmit={handleEditSubmit}>
+            <ResponsiveTextarea
+              defaultValue={data.content}
+              autoFocus={true}
+              placeholder={"Add a comment..."}
+              name={"editTextarea"}
+            />
+            <button type="submit" className="btn-base update-btn">
+              Update
+            </button>
+          </form>
+        ) : (
+          <p className="content">
+            {isReplying(data.replyingTo)}
+            {data.content}
+          </p>
+        )}
       </div>
     </div>
   );

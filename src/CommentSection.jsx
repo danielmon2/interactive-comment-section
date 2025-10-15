@@ -40,6 +40,10 @@ const CommentSection = () => {
     setIsCommentRated(newRatings);
   };
 
+  const handleEditing = (id) => {
+    setComments(changeCommentState(comments, id, "edit"));
+  };
+
   const handleNewComment = (inputData, id) => {
     if (id === 0) {
       const newComment = new UserComment(comments, inputData);
@@ -47,9 +51,7 @@ const CommentSection = () => {
       newComments.push(newComment);
       setComments(newComments);
     } else {
-      setComments(
-        changeCommentState(prevState, id, "amend_new", "", inputData),
-      );
+      setComments(changeCommentState(comments, id, "amend_new", "", inputData));
     }
   };
 
@@ -73,6 +75,8 @@ const CommentSection = () => {
             onReply={handleReply}
             onDelete={handleOpenDeleteModal}
             onScoreChange={handleScoreChange}
+            onEdit={handleEditing}
+            isEdited={el.editing}
             commentRating={isCommentRated[el.id]}
           />
           {el.replies.length !== 0 && (
@@ -80,7 +84,17 @@ const CommentSection = () => {
               <div className="line"></div>
               <div className="reply-container">
                 {el.replies.map((el) => {
-                  if (!el.newComment) {
+                  if (el.newComment) {
+                    return (
+                      <NewComment
+                        key={el.id}
+                        id={el.id}
+                        image={currentUser.image}
+                        createNewComment={handleNewComment}
+                        isReplying={true}
+                      />
+                    );
+                  } else {
                     return (
                       <Comment
                         key={el.id}
@@ -89,17 +103,8 @@ const CommentSection = () => {
                         onReply={handleReply}
                         onDelete={handleOpenDeleteModal}
                         onScoreChange={handleScoreChange}
+                        onEdit={handleEditing}
                         commentRating={isCommentRated[el.id]}
-                      />
-                    );
-                  } else {
-                    return (
-                      <NewComment
-                        key={el.id}
-                        id={el.id}
-                        image={currentUser.image}
-                        createNewComment={handleNewComment}
-                        isReplying={true}
                       />
                     );
                   }

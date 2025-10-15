@@ -95,6 +95,12 @@ const changeCommentState = (comments, id, action, isCommentRated, input) => {
 
         newComments[index].replies = [...comments[index].replies];
         newComments[index].replies.splice(0, 0, newComment);
+      } else if (action === "edit") {
+        if (newComments[index].editing) {
+          delete newComments[index].editing;
+        } else {
+          newComments[index].editing = true;
+        }
       }
       return newComments;
     }
@@ -135,6 +141,12 @@ const changeCommentState = (comments, id, action, isCommentRated, input) => {
           } else if (action === "amend_new") {
             delete newComments[parentIndex].replies[index].newComment;
             newComments[parentIndex].replies[index].content = input;
+          } else if (action === "edit") {
+            if (newComments[parentIndex].replies[index].editing === true) {
+              delete newComments[parentIndex].replies[index].editing;
+            } else {
+              newComments[parentIndex].replies[index].editing = true;
+            }
           }
           return newComments;
         }
