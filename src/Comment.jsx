@@ -1,13 +1,6 @@
 import DeleteModal from "./DeleteModal";
 
-const Comment = ({
-  score,
-  data,
-  currentUser,
-  onDelete,
-  onUpvote,
-  onDownvote,
-}) => {
+const Comment = ({ score, data, currentUser, onDelete, onScoreChange }) => {
   // Add @ if it's a reply
   let answerTo = "";
   if (data.replyingTo) {
@@ -54,14 +47,14 @@ const Comment = ({
       <div className="vote-container">
         <button
           className="upvote-btn"
-          onClick={() => onUpvote(data.id)}
+          onClick={() => onScoreChange(data.id, "upvote")}
         ></button>
         <div>
           <span>{score}</span>
         </div>
         <button
           className="downvote-btn"
-          onClick={() => onDownvote(data.id)}
+          onClick={() => onScoreChange(data.id, "downvote")}
         ></button>
       </div>
 
