@@ -1,3 +1,5 @@
+import DeleteModal from "./DeleteModal";
+
 const Comment = ({
   score,
   username,
@@ -6,7 +8,18 @@ const Comment = ({
   content,
   replyingTo,
   currentUser,
+  onDelete,
 }) => {
+  // Add @ if it's a reply
+  let answerTo = "";
+  if (replyingTo !== undefined) {
+    answerTo = (
+      <a href="#" className="replyingTo">
+        {"@" + replyingTo + " "}
+      </a>
+    );
+  }
+
   let currentUserIndicator = "";
   let userButtons = (
     <button className="reply-btn">
@@ -14,6 +27,7 @@ const Comment = ({
       Reply
     </button>
   );
+
   if (username === currentUser) {
     // Add current user indicator
     currentUserIndicator = (
@@ -25,7 +39,7 @@ const Comment = ({
     // Use different buttons if the current comment is made by the current user
     userButtons = (
       <div className="current-user-btns">
-        <button className="delete-btn">
+        <button className="delete-btn" onClick={onDelete}>
           <img src="/assets/images/icon-delete.svg" />
           Delete
         </button>
@@ -37,15 +51,6 @@ const Comment = ({
     );
   }
 
-  // Add @ if it's a reply
-  let answerTo = "";
-  if (replyingTo !== undefined) {
-    answerTo = (
-      <a href="#" className="replyingTo">
-        {"@" + replyingTo + " "}
-      </a>
-    );
-  }
   return (
     <div className="comment">
       <div className="vote-container">
