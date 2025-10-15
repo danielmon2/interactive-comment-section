@@ -1,19 +1,26 @@
 .comment-section {
   max-width: 750px;
+  min-width: 250px;
   margin: 50px 20px;
 }
 
 .comment-chain {
   display: grid;
-  grid-template-columns: 70px 1fr;
+  grid-template-columns: auto 1fr;
   grid-template-rows: auto auto;
 }
 
 .line {
   width: 1px;
   background-color: var(--grey-100);
-  margin: 10px auto;
+  margin: 10px 35px;
   margin-bottom: 20px;
   grid-column: 1 / 1;
   grid-row: 2 / 2;
+}
+
+@media (max-width: 500px) {
+  .line {
+    margin: 10px 20px 10px 0;
+  }
 }

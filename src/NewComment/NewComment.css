@@ -30,3 +30,27 @@
 .comment--new__send-btn:hover {
   background-color: var(--purple-800);
 }
+
+@media (max-width: 500px) {
+  .comment__grid--new {
+    grid-template-columns: 35px auto;
+    grid-template-rows: auto auto;
+  }
+
+  .comment--new__avatar {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+  }
+
+  .comment--new__textarea {
+    grid-column: 1 / 3;
+    grid-row: 1 / 2;
+  }
+
+  .comment--new__send-btn {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    align-self: center;
+    justify-self: end;
+  }
+}

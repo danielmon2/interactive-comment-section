@@ -8,9 +8,9 @@
 
 .score-container__gray-box--centered {
   background-color: var(--grey-50);
-  min-width: 28px;
+  min-width: 34px;
   max-width: 100px;
-  min-height: 22px;
+  min-height: 28px;
   padding: 0 3px;
   display: flex;
   justify-content: center;
@@ -18,6 +18,8 @@
 }
 
 .score-container__score {
+  color: var(--purple-600);
+  font-weight: 450;
   width: 100%;
   text-align: center;
   word-break: break-all;
@@ -29,4 +31,29 @@
 
 .score-container__downvote-btn {
   border-radius: 0 0 5px 5px;
+}
+
+@media (max-width: 500px) {
+  .score-container {
+    margin-right: 0;
+    grid-column: 1 / 2;
+    grid-row: 3 / 4;
+    flex-direction: row;
+    align-items: center;
+
+    align-self: center;
+    justify-self: start;
+  }
+
+  .score-container__gray-box--centered {
+    padding: 3px;
+  }
+
+  .score-container__upvote-btn {
+    border-radius: 5px 0 0 5px;
+  }
+
+  .score-container__downvote-btn {
+    border-radius: 0 5px 5px 0;
+  }
 }
