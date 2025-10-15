@@ -4,7 +4,7 @@ import Comment from "./Comment";
 import NewComment from "./NewComment";
 import { useState } from "react";
 import DeleteModal from "./DeleteModal";
-import changeCommentState from "./ModifyCommentState";
+import changeCommentState, { UserComment } from "./ModifyCommentState";
 
 const CommentSection = () => {
   const currentUser = jsonData.currentUser;
@@ -38,35 +38,15 @@ const CommentSection = () => {
   };
 
   const handleNewComment = (inputData) => {
-    const currentTime = "1 second ago";
-    const newId = getNewId();
-    const newComment = {
-      id: newId,
-      content: inputData,
-      createdAt: currentTime,
-      score: 0,
-      user: currentUser,
-      replies: [],
-    };
+    const newComment = new UserComment(comments, inputData);
 
     const newComments = [...comments];
     newComments.push(newComment);
     setComments(newComments);
   };
 
-  const getNewId = () => {
-    const idArr = [];
-    for (const el of comments) {
-      idArr.push(el.id);
-      if (el.replies.length !== 0) {
-        const parentEl = el.replies;
-        for (const el of parentEl) {
-          idArr.push(el.id);
-        }
-      }
-    }
-
-    return idArr[idArr.length - 1] + 1;
+  const handleReply = (id) => {
+    setComments(changeCommentState(comments, id, "create_new"));
   };
 
   return (
@@ -77,6 +57,7 @@ const CommentSection = () => {
             data={el}
             key={el.id}
             currentUser={currentUser.username}
+            onReply={handleReply}
             onDelete={handleOpenDeleteModal}
             onScoreChange={handleScoreChange}
             commentRating={isCommentRated[el.id]}
@@ -85,16 +66,30 @@ const CommentSection = () => {
             <>
               <div className="line"></div>
               <div className="reply-container">
-                {el.replies.map((el) => (
-                  <Comment
-                    key={el.id}
-                    data={el}
-                    currentUser={currentUser.username}
-                    onDelete={handleOpenDeleteModal}
-                    onScoreChange={handleScoreChange}
-                    commentRating={isCommentRated[el.id]}
-                  />
-                ))}
+                {el.replies.map((el) => {
+                  if (!el.newComment) {
+                    return (
+                      <Comment
+                        key={el.id}
+                        data={el}
+                        currentUser={currentUser.username}
+                        onReply={handleReply}
+                        onDelete={handleOpenDeleteModal}
+                        onScoreChange={handleScoreChange}
+                        commentRating={isCommentRated[el.id]}
+                      />
+                    );
+                  } else {
+                    return (
+                      <NewComment
+                        key={el.id}
+                        image={currentUser.image}
+                        createNewComment={handleNewComment}
+                        isReplying={true}
+                      />
+                    );
+                  }
+                })}
               </div>
             </>
           )}
@@ -103,6 +98,7 @@ const CommentSection = () => {
       <NewComment
         image={currentUser.image}
         createNewComment={handleNewComment}
+        isReplying={false}
       />
       <DeleteModal
         isOpen={isDeleteModalOpen}

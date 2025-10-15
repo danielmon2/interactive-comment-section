@@ -3,6 +3,7 @@ import CommentVotes from "./CommentVotes";
 const Comment = ({
   data,
   currentUser,
+  onReply,
   onDelete,
   onScoreChange,
   commentRating,
@@ -36,7 +37,10 @@ const Comment = ({
   const userButtons = (isCurrentUser) => {
     if (!isCurrentUser) {
       return (
-        <button className="btn-base reply-btn gray-hover">
+        <button
+          className="btn-base reply-btn gray-hover"
+          onClick={() => onReply(data.id)}
+        >
           <img className="btn-base-icon" src="/assets/images/icon-reply.svg" />
           Reply
         </button>

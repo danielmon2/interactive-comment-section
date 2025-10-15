@@ -21,6 +21,31 @@
 
   Selective deep copy func
 */
+class UserComment {
+  constructor(comments, content) {
+    this.id = getNewId(comments);
+    this.content = content;
+    this.createdAt = "1 second ago";
+    this.score = 0;
+    this.user = {
+      image: {
+        png: "./assets/images/avatars/image-juliusomo.png",
+        webp: "./assets/images/avatars/image-juliusomo.webp",
+      },
+      username: "juliusomo",
+    };
+    this.replies = [];
+  }
+}
+
+class UserReply extends UserComment {
+  constructor(content, replyingTo) {
+    super(content);
+    this.replyingTo = replyingTo;
+    delete this.replies;
+  }
+}
+
 const calculateNewScore = (isCommentRated, id, action, score) => {
   // Check if user already scored this comment
   if (id in isCommentRated) {
@@ -47,12 +72,12 @@ const calculateNewScore = (isCommentRated, id, action, score) => {
 };
 
 const changeCommentState = (comments, id, action, isCommentRated) => {
-  // console.log(comments, typeof comments);
   // Entries() because it doesn't work without it (if array has objects in it)
   for (const [index, el] of comments.entries()) {
     if (el.id === id) {
       const newComments = [...comments];
       newComments[index] = { ...comments[index] };
+
       if (action === "delete") {
         newComments.splice(index, 1);
       } else if (action === "upvote" || action === "downvote") {
@@ -64,6 +89,12 @@ const changeCommentState = (comments, id, action, isCommentRated) => {
         );
         newComments[index].score = newScore;
         return [newRatings, newComments];
+      } else if (action === "create_new") {
+        newComments[index].replies = [...comments[index].replies];
+        newComments[index].replies.splice(0, 0, {
+          newComment: true,
+          id: getNewId(comments),
+        });
       }
       return newComments;
     }
@@ -84,6 +115,7 @@ const changeCommentState = (comments, id, action, isCommentRated) => {
           newComments[parentIndex].replies[index] = {
             ...comments[parentIndex].replies[index],
           };
+
           if (action === "delete") {
             newComments[parentIndex].replies.splice(index, 1);
           } else if (action === "upvote" || action === "downvote") {
@@ -95,6 +127,11 @@ const changeCommentState = (comments, id, action, isCommentRated) => {
             );
             newComments[parentIndex].replies[index].score = newScore;
             return [newRatings, newComments];
+          } else if (action === "create_new") {
+            newComments[parentIndex].replies.splice(index + 1, 0, {
+              newComment: true,
+              id: getNewId(comments),
+            });
           }
           return newComments;
         }
@@ -103,5 +140,24 @@ const changeCommentState = (comments, id, action, isCommentRated) => {
   }
 };
 
+const getNewId = (comments) => {
+  let biggestId = 0;
+  for (const el of comments) {
+    if (el.id > biggestId) {
+      biggestId = el.id;
+    }
+    if (el.replies.length !== 0) {
+      const parentEl = el.replies;
+      for (const el of parentEl) {
+        if (el.id > biggestId) {
+          biggestId = el.id;
+        }
+      }
+    }
+  }
+
+  return biggestId + 1;
+};
+
 export default changeCommentState;
-export { calculateNewScore };
+export { getNewId, UserComment };

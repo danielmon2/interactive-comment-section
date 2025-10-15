@@ -1,13 +1,13 @@
-const NewComment = ({ image, createNewComment }) => {
+const NewComment = ({ image, createNewComment, isReplying }) => {
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    event.target.reset();
 
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData.entries());
 
     if (data.newCommentInput !== "") {
       createNewComment(data.newCommentInput);
+      event.target.reset();
     }
   };
 
@@ -15,6 +15,7 @@ const NewComment = ({ image, createNewComment }) => {
     <form onSubmit={handleFormSubmit} className="comment-base new-comment">
       <img className="new-comment-avatar" src={image.png}></img>
       <input
+        autoFocus={isReplying}
         name="newCommentInput"
         className="new-comment-input"
         type="text"
