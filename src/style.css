@@ -1,0 +1,247 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 400;
+}
+
+:root {
+  --purple-800: hsl(239, 37%, 43%);
+  --purple-600: hsl(238, 40%, 52%);
+  --pink-400: hsl(358, 79%, 66%);
+  --purple-200: hsl(239, 57%, 85%);
+  --pink-200: hsl(357, 100%, 86%);
+  --grey-800: hsl(212, 24%, 26%);
+  --grey-500: hsl(211, 10%, 45%);
+  --grey-100: hsl(223, 19%, 93%);
+  --grey-50: hsl(228, 33%, 97%);
+}
+
+body {
+  background-color: var(--grey-50);
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+.comment-section {
+  width: 750px;
+  margin: 50px 0;
+}
+
+.replyingTo {
+  color: var(--purple-600);
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.comment, .reply, .new-comment {
+  display: flex;
+  background-color: white;
+  margin-bottom: 15px;
+  padding: 20px;
+  border: none;
+  border-radius: 10px;
+  text-align: justify;
+  text-justify: inter-word;
+}
+  .vote-container {
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+
+    div, .upvote-btn, .downvote-btn {
+      background-color: var(--grey-50);
+      width: 28px;
+      height: 22px;
+    }
+
+    div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+    }
+
+    .upvote-btn {
+      background-image: url(/assets/images/icon-plus.svg);
+      background-repeat: no-repeat;
+      background-position: 50%;
+      border-radius: 5px 5px 0 0;
+
+    }
+
+    .downvote-btn {
+      background-image: url(/assets/images/icon-minus.svg);
+      background-repeat: no-repeat;
+      background-position: 50%;
+      border-radius: 0 0 5px 5px;
+    }
+      .upvote-btn:hover, .downvote-btn:hover {
+        background-color: var(--grey-100);
+      }
+  }
+
+  .comment-top-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+
+    .avatar {
+      width: 25px;
+      height: 25px;
+    }
+
+    .reply-btn, .edit-btn, .delete-btn {
+      background-color: white;
+      margin-left: auto;
+      color: var(--purple-600);
+      font-weight: 500;
+      font-size: 0.9rem;
+      padding: 10px;
+      border-radius: 5px;
+
+      img {
+        margin-right: 5px;
+        width: 12px;
+      }
+    }
+      .reply-btn:hover, .edit-btn:hover, .delete-btn:hover {
+        background-color: var(--grey-100);
+      }
+
+    .delete-btn {
+      color: var(--pink-400);
+    }
+
+    .username {
+      font-weight: 500;
+      margin-left: 15px;
+    }
+
+    .current-user-indicator {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      background-color: var(--purple-600);
+      font-size: 0.8rem;
+      width: 33px;
+      height: 18px;
+      border-radius: 2px;
+      margin-left: 5px;
+    }
+
+    .created-at {
+      color: var(--grey-500);
+      margin-left: 15px;
+    }
+
+    .current-user-btns {
+      margin-left: auto;
+    }
+  }
+
+.reply-container {
+  display: flex;
+}
+  .line {
+    width: 1px;
+    background-color: var(--grey-100);
+    margin: 0 34.5px;
+    margin-bottom: 20px;
+  }
+
+.new-comment {
+  height: 120px;
+  margin: 0;
+
+  .avatar {
+    width: 35px;
+    height: 35px;
+  }
+
+  input {
+    width: 100%;
+    height: 80px;
+    margin: 0 10px;
+    border: 1px solid var(--grey-100);
+    border-radius: 8px;
+    padding: 5px;
+  }
+
+  input::placeholder {
+    color: var(--grey-500);
+  }
+
+  .send-btn {
+    width: 100px;
+    height: 35px;
+    background-color: var(--purple-600);
+    color: white;
+    font-size: .8rem;
+    font-weight: 500;
+    border-radius: 6px;
+  }
+
+  .send-btn:hover {
+    background-color: var(--purple-800);
+  }
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: 350px;
+  border: none;
+  border-radius: 10px;
+  padding: 30px;
+
+  h1 {
+    font-weight: 500;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+  }
+
+  p {
+    color: var(--grey-500);
+    margin-bottom: 20px;
+  }
+
+  section {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      height: 40px;
+      border-radius: 5px;
+      flex-basis: 50%;
+      color: white;
+      font-weight: 500;
+    }
+
+    .cancel-btn {
+      background-color: var(--grey-500);
+      margin-right: 20px;
+    }
+
+    .delete-btn {
+      background-color: var(--pink-400);
+    }
+  }
+
+}
+
+.modal::backdrop {
+  background: rgb(0 0 0 / 50%);
+}
