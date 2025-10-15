@@ -2,6 +2,7 @@ import DeleteModal from "./DeleteModal";
 
 const Comment = ({
   score,
+  id,
   username,
   image,
   createdAt,
@@ -9,6 +10,8 @@ const Comment = ({
   replyingTo,
   currentUser,
   onDelete,
+  onUpvote,
+  onDownvote,
 }) => {
   // Add @ if it's a reply
   let answerTo = "";
@@ -54,11 +57,14 @@ const Comment = ({
   return (
     <div className="comment">
       <div className="vote-container">
-        <button className="upvote-btn"></button>
+        <button className="upvote-btn" onClick={() => onUpvote(id)}></button>
         <div>
           <span>{score}</span>
         </div>
-        <button className="downvote-btn"></button>
+        <button
+          className="downvote-btn"
+          onClick={() => onDownvote(id)}
+        ></button>
       </div>
 
       <div>

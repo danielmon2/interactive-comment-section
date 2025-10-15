@@ -8,6 +8,7 @@ const CommentSection = () => {
   const comments = jsonData.comments;
   const currentUser = jsonData.currentUser;
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [commentScores, setCommentScores] = useState(calculateCommentScores);
 
   const handleOpenDeleteModal = () => {
     setDeleteModalOpen(true);
@@ -17,13 +18,38 @@ const CommentSection = () => {
     setDeleteModalOpen(false);
   };
 
+  const handleUpvoteClick = (id) => {
+    const newScore = commentScores[id] + 1;
+    setCommentScores({ ...commentScores, [id]: newScore });
+  };
+
+  const handleDownvoteClick = (id) => {
+    const newScore = commentScores[id] - 1;
+    setCommentScores({ ...commentScores, [id]: newScore });
+  };
+
+  function calculateCommentScores() {
+    const scores = {};
+    comments.forEach((el) => {
+      scores[el.id] = el.score;
+      if (el.replies.length !== 0) {
+        el.replies.forEach((el) => {
+          scores[el.id] = el.score;
+        });
+      }
+    });
+    console.log(typeof scores);
+    return scores;
+  }
+
   return (
     <div className="comment-section">
       {comments.map((el) => (
         <div className="comment-chain" key={"comment-chain_" + el.id}>
           <Comment
             reply={false}
-            score={el.score}
+            score={commentScores[el.id]}
+            id={el.id}
             username={el.user.username}
             image={el.user.image}
             createdAt={el.createdAt}
@@ -31,6 +57,8 @@ const CommentSection = () => {
             key={el.id}
             currentUser={currentUser.username}
             onDelete={handleOpenDeleteModal}
+            onUpvote={handleUpvoteClick}
+            onDownvote={handleDownvoteClick}
           />
           {el.replies.length !== 0 ? (
             <div className="reply-container">
@@ -38,7 +66,8 @@ const CommentSection = () => {
               <div>
                 {el.replies.map((el) => (
                   <Comment
-                    score={el.score}
+                    score={commentScores[el.id]}
+                    id={el.id}
                     username={el.user.username}
                     image={el.user.image}
                     createdAt={el.createdAt}
@@ -47,6 +76,8 @@ const CommentSection = () => {
                     replyingTo={el.replyingTo}
                     currentUser={currentUser.username}
                     onDelete={handleOpenDeleteModal}
+                    onUpvote={handleUpvoteClick}
+                    onDownvote={handleDownvoteClick}
                   />
                 ))}
               </div>
