@@ -43,11 +43,11 @@ button {
   text-decoration: none;
 }
 
-.comment,
-.reply,
-.new-comment {
+.comment-base {
   display: flex;
   background-color: white;
+  height: auto;
+  width: 100%;
   margin-bottom: 15px;
   padding: 20px;
   border: none;
@@ -62,9 +62,7 @@ button {
   margin-right: 20px;
 }
 
-.comment-score,
-.upvote-btn,
-.downvote-btn {
+.gray-box-centered {
   background-color: var(--grey-50);
   width: 28px;
   height: 22px;
@@ -81,128 +79,132 @@ button {
   border-radius: 0 0 5px 5px;
 }
 
-.score-img-purple {
+.purple-filter {
   filter: brightness(0) saturate(100%) invert(34%) sepia(10%) saturate(3208%)
     hue-rotate(200deg) brightness(105%) contrast(96%);
 }
 
-.upvote-btn:hover,
-.downvote-btn:hover {
+.gray-hover:hover {
   background-color: var(--grey-100);
+}
+
+.disabled-btn {
+  cursor: default;
 }
 
 .comment-top-row {
   display: flex;
   align-items: center;
   margin-bottom: 8px;
+  width: 100%;
+}
 
-  .avatar {
-    width: 25px;
-    height: 25px;
-  }
+.avatar {
+  width: 25px;
+  height: 25px;
+}
 
-  .reply-btn,
-  .edit-btn,
-  .delete-btn {
-    background-color: white;
-    margin-left: auto;
-    color: var(--purple-600);
-    font-weight: 500;
-    font-size: 0.9rem;
-    padding: 10px;
-    border-radius: 5px;
+.delete-btn {
+  color: var(--pink-400);
+}
 
-    img {
-      margin-right: 5px;
-      width: 12px;
-    }
-  }
-  .reply-btn:hover,
-  .edit-btn:hover,
-  .delete-btn:hover {
-    background-color: var(--grey-100);
-  }
+.edit-btn,
+.reply-btn {
+  color: var(--purple-600);
+}
 
-  .delete-btn {
-    color: var(--pink-400);
-  }
+.username {
+  font-weight: 500;
+  margin-left: 15px;
+}
 
-  .username {
-    font-weight: 500;
-    margin-left: 15px;
-  }
+.current-user-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background-color: var(--purple-600);
+  font-size: 0.8rem;
+  width: 33px;
+  height: 18px;
+  border-radius: 2px;
+  margin-left: 5px;
+}
 
-  .current-user-indicator {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    background-color: var(--purple-600);
-    font-size: 0.8rem;
-    width: 33px;
-    height: 18px;
-    border-radius: 2px;
-    margin-left: 5px;
-  }
+.created-at {
+  color: var(--grey-500);
+  margin-left: 15px;
+}
 
-  .created-at {
-    color: var(--grey-500);
-    margin-left: 15px;
-  }
+.current-user-btns {
+  margin-left: auto;
+}
 
-  .current-user-btns {
-    margin-left: auto;
-  }
+.btn-base {
+  background-color: white;
+  margin-left: auto;
+  font-weight: 500;
+  font-size: 0.9rem;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.btn-base-icon {
+  margin-right: 5px;
+  width: 12px;
 }
 
 .reply-container {
-  display: flex;
+  display: grid;
+  grid-column: 2 / 2;
+  grid-row: 2 / 2;
 }
+
 .line {
   width: 1px;
   background-color: var(--grey-100);
-  margin: 0 34.5px;
+  margin: 10px auto;
   margin-bottom: 20px;
+  grid-column: 1 / 1;
+  grid-row: 2 / 2;
 }
 
 .new-comment {
   height: 120px;
   margin: 0;
-
-  .avatar {
-    width: 35px;
-    height: 35px;
-  }
-
-  input {
-    width: 100%;
-    height: 80px;
-    margin: 0 10px;
-    border: 1px solid var(--grey-100);
-    border-radius: 8px;
-    padding: 5px;
-  }
-
-  input::placeholder {
-    color: var(--grey-500);
-  }
-
-  .send-btn {
-    width: 100px;
-    height: 35px;
-    background-color: var(--purple-600);
-    color: white;
-    font-size: 0.8rem;
-    font-weight: 500;
-    border-radius: 6px;
-  }
-
-  .send-btn:hover {
-    background-color: var(--purple-800);
-  }
 }
 
-.modal {
+.avatar {
+  width: 35px;
+  height: 35px;
+}
+
+.new-comment-input {
+  width: 100%;
+  height: 80px;
+  margin: 0 10px;
+  border: 1px solid var(--grey-100);
+  border-radius: 8px;
+  padding: 5px;
+}
+
+.new-comment-input::placeholder {
+  color: var(--grey-500);
+}
+
+.send-btn {
+  width: 100px;
+  height: 35px;
+  background-color: var(--purple-600);
+  font-size: 0.8rem;
+  color: white;
+}
+
+.send-btn:hover {
+  background-color: var(--purple-800);
+}
+
+.delete-modal {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -227,21 +229,17 @@ button {
     display: flex;
     justify-content: space-between;
 
-    button {
-      height: 40px;
-      border-radius: 5px;
-      flex-basis: 50%;
-      color: white;
-      font-weight: 500;
-    }
-
     .cancel-btn {
+      color: white;
       background-color: var(--grey-500);
       margin-right: 20px;
+      flex-basis: 50%;
     }
 
-    .delete-btn {
+    .delete-btn-modal {
+      color: white;
       background-color: var(--pink-400);
+      flex-basis: 50%;
     }
   }
 }
