@@ -93,6 +93,7 @@ const CommentSection = () => {
             currentUser={currentUser.username}
             onDelete={handleOpenDeleteModal}
             onScoreChange={handleScoreChange}
+            commentRated={isCommentRated[el.id] && isCommentRated[el.id]}
           />
           {el.replies.length !== 0 && (
             <div className="reply-container">
@@ -106,6 +107,9 @@ const CommentSection = () => {
                     currentUser={currentUser.username}
                     onDelete={handleOpenDeleteModal}
                     onScoreChange={handleScoreChange}
+                    commentRated={
+                      isCommentRated[el.id] && isCommentRated[el.id]
+                    }
                   />
                 ))}
               </div>

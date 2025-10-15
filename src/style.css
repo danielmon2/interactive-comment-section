@@ -60,38 +60,35 @@ button {
   display: flex;
   flex-direction: column;
   margin-right: 20px;
+}
 
-  div,
-  .upvote-btn,
-  .downvote-btn {
-    background-color: var(--grey-50);
-    width: 28px;
-    height: 22px;
-  }
+.comment-score,
+.upvote-btn,
+.downvote-btn {
+  background-color: var(--grey-50);
+  width: 28px;
+  height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.upvote-btn {
+  border-radius: 5px 5px 0 0;
+}
 
-  .upvote-btn {
-    background-image: url(/assets/images/icon-plus.svg);
-    background-repeat: no-repeat;
-    background-position: 50%;
-    border-radius: 5px 5px 0 0;
-  }
+.downvote-btn {
+  border-radius: 0 0 5px 5px;
+}
 
-  .downvote-btn {
-    background-image: url(/assets/images/icon-minus.svg);
-    background-repeat: no-repeat;
-    background-position: 50%;
-    border-radius: 0 0 5px 5px;
-  }
-  .upvote-btn:hover,
-  .downvote-btn:hover {
-    background-color: var(--grey-100);
-  }
+.score-img-purple {
+  filter: brightness(0) saturate(100%) invert(34%) sepia(10%) saturate(3208%)
+    hue-rotate(200deg) brightness(105%) contrast(96%);
+}
+
+.upvote-btn:hover,
+.downvote-btn:hover {
+  background-color: var(--grey-100);
 }
 
 .comment-top-row {
