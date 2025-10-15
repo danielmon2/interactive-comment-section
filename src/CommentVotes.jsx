@@ -13,6 +13,10 @@ const CommentVotes = ({
     }
   };
 
+  const formattedNum = (num) => {
+    return num.toLocaleString("en", { useGrouping: true });
+  };
+
   return (
     <div className="vote-container">
       <button
@@ -27,7 +31,7 @@ const CommentVotes = ({
       </button>
 
       <div className="gray-box-centered">
-        <span>{score}</span>
+        <span className="score">{formattedNum(score)}</span>
       </div>
 
       <button

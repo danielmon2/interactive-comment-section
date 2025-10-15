@@ -80,11 +80,19 @@ button {
 
 .gray-box-centered {
   background-color: var(--grey-50);
-  width: 28px;
-  height: 22px;
+  min-width: 28px;
+  max-width: 100px;
+  min-height: 22px;
+  padding: 0 3px;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.score {
+  width: 100%;
+  text-align: center;
+  word-break: break-all;
 }
 
 .upvote-btn {
@@ -185,12 +193,13 @@ button {
   grid-row: 2 / 2;
 }
 
+/* New comment */
 .new-comment {
   height: 120px;
   margin: 0;
 }
 
-.avatar {
+.new-comment-avatar {
   width: 35px;
   height: 35px;
 }
