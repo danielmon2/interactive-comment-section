@@ -2,12 +2,7 @@ import DeleteModal from "./DeleteModal";
 
 const Comment = ({
   score,
-  id,
-  username,
-  image,
-  createdAt,
-  content,
-  replyingTo,
+  data,
   currentUser,
   onDelete,
   onUpvote,
@@ -15,10 +10,10 @@ const Comment = ({
 }) => {
   // Add @ if it's a reply
   let answerTo = "";
-  if (replyingTo !== undefined) {
+  if (data.replyingTo) {
     answerTo = (
       <a href="#" className="replyingTo">
-        {"@" + replyingTo + " "}
+        {"@" + data.replyingTo + " "}
       </a>
     );
   }
@@ -31,7 +26,7 @@ const Comment = ({
     </button>
   );
 
-  if (username === currentUser) {
+  if (data.user.username === currentUser) {
     // Add current user indicator
     currentUserIndicator = (
       <div className="current-user-indicator">
@@ -57,27 +52,30 @@ const Comment = ({
   return (
     <div className="comment">
       <div className="vote-container">
-        <button className="upvote-btn" onClick={() => onUpvote(id)}></button>
+        <button
+          className="upvote-btn"
+          onClick={() => onUpvote(data.id)}
+        ></button>
         <div>
           <span>{score}</span>
         </div>
         <button
           className="downvote-btn"
-          onClick={() => onDownvote(id)}
+          onClick={() => onDownvote(data.id)}
         ></button>
       </div>
 
       <div>
         <div className="comment-top-row">
-          <img className="avatar" src={image.png}></img>
-          <p className="username">{username}</p>
+          <img className="avatar" src={data.user.image.png}></img>
+          <p className="username">{data.user.username}</p>
           {currentUserIndicator}
-          <p className="created-at">{createdAt}</p>
+          <p className="created-at">{data.createdAt}</p>
           {userButtons}
         </div>
         <p>
           {answerTo}
-          {content}
+          {data.content}
         </p>
       </div>
     </div>

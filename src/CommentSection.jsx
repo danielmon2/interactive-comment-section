@@ -38,7 +38,6 @@ const CommentSection = () => {
         });
       }
     });
-    console.log(typeof scores);
     return scores;
   }
 
@@ -47,33 +46,23 @@ const CommentSection = () => {
       {comments.map((el) => (
         <div className="comment-chain" key={"comment-chain_" + el.id}>
           <Comment
-            reply={false}
             score={commentScores[el.id]}
-            id={el.id}
-            username={el.user.username}
-            image={el.user.image}
-            createdAt={el.createdAt}
-            content={el.content}
+            data={el}
             key={el.id}
             currentUser={currentUser.username}
             onDelete={handleOpenDeleteModal}
             onUpvote={handleUpvoteClick}
             onDownvote={handleDownvoteClick}
           />
-          {el.replies.length !== 0 ? (
+          {el.replies.length !== 0 && (
             <div className="reply-container">
               <div className="line"></div>
               <div>
                 {el.replies.map((el) => (
                   <Comment
-                    score={commentScores[el.id]}
-                    id={el.id}
-                    username={el.user.username}
-                    image={el.user.image}
-                    createdAt={el.createdAt}
-                    content={el.content}
                     key={el.id}
-                    replyingTo={el.replyingTo}
+                    score={commentScores[el.id]}
+                    data={el}
                     currentUser={currentUser.username}
                     onDelete={handleOpenDeleteModal}
                     onUpvote={handleUpvoteClick}
@@ -82,8 +71,6 @@ const CommentSection = () => {
                 ))}
               </div>
             </div>
-          ) : (
-            ""
           )}
         </div>
       ))}
