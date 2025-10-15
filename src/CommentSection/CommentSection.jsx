@@ -1,12 +1,10 @@
 import jsonData from "/data/data.json";
-// import jsonData from "/data/test.json";
 import { useState } from "react";
 import "./CommentSection.css";
 
 import Comment from "../Comment/Comment";
 import NewComment from "../NewComment/NewComment";
 import DeleteModal from "../DeleteModal/DeleteModal";
-
 import changeCommentScore, {
   deleteReplyForm,
   deleteEditingForm,

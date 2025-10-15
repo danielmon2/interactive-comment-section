@@ -26,7 +26,7 @@ const NewComment = ({ id, image, createNewComment, isReplying }) => {
         minTextareaHeight={80}
       />
       <button type="submit" className="btn comment__btn comment--new__send-btn">
-        SEND
+        {isReplying ? "REPLY" : "SEND"}
       </button>
     </form>
   );

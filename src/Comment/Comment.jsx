@@ -122,7 +122,7 @@ const Comment = ({
             type="submit"
             className="btn comment__btn editing-form__update-btn"
           >
-            Update
+            UPDATE
           </button>
         </form>
       ) : (
