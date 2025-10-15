@@ -1,10 +1,10 @@
-.vote-container {
+.score-container {
   display: flex;
   flex-direction: column;
   margin-right: 20px;
 }
 
-.gray-box-centered {
+.score-container__gray-box--centered {
   background-color: var(--grey-50);
   min-width: 28px;
   max-width: 100px;
@@ -15,16 +15,16 @@
   align-items: center;
 }
 
-.score {
+.score-container__score {
   width: 100%;
   text-align: center;
   word-break: break-all;
 }
 
-.upvote-btn {
+.score-container__upvote-btn {
   border-radius: 5px 5px 0 0;
 }
 
-.downvote-btn {
+.score-container__downvote-btn {
   border-radius: 0 0 5px 5px;
 }

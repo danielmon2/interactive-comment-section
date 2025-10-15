@@ -9,7 +9,7 @@ const CommentVotes = ({
 }) => {
   const disableBtn = (isCurrentUser) => {
     if (isCurrentUser) {
-      return "disabled-btn";
+      return "btn--disabled";
     } else {
       return "gray-hover";
     }
@@ -20,9 +20,12 @@ const CommentVotes = ({
   };
 
   return (
-    <div className="vote-container">
+    <div className="score-container">
       <button
-        className={`gray-box-centered upvote-btn ${disableBtn(isCurrentUser)}`}
+        className={
+          "score-container__gray-box--centered btn score-container__upvote-btn " +
+          disableBtn(isCurrentUser)
+        }
         disabled={isCurrentUser}
         onClick={() => onScoreChange(id, "upvote")}
       >
@@ -32,12 +35,12 @@ const CommentVotes = ({
         />
       </button>
 
-      <div className="gray-box-centered">
-        <span className="score">{formattedNum(score)}</span>
+      <div className="score-container__gray-box--centered">
+        <span className="score-container__score">{formattedNum(score)}</span>
       </div>
 
       <button
-        className={`gray-box-centered downvote-btn ${disableBtn(isCurrentUser)}`}
+        className={`score-container__gray-box--centered btn score-container__downvote-btn ${disableBtn(isCurrentUser)}`}
         disabled={isCurrentUser}
         onClick={() => onScoreChange(id, "downvote")}
       >
