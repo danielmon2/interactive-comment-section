@@ -202,23 +202,23 @@ button {
 }
 
 /* New comment */
-.new-comment {
-  height: 120px;
-}
 
 .new-comment-avatar {
   width: 35px;
   height: 35px;
 }
 
-.new-comment-input {
+.base-textarea {
   width: 100%;
-  height: 80px;
-  margin: 0 10px;
   border: 1px solid var(--grey-100);
   border-radius: 8px;
   padding: 8px 15px;
   resize: none;
+}
+
+.new-comment-textarea {
+  height: 80px;
+  margin: 0 10px;
 }
 
 .new-comment-input::placeholder {
