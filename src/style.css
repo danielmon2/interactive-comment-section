@@ -36,6 +36,12 @@ button {
   margin: 50px 0;
 }
 
+.comment-chain {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  grid-template-rows: auto auto;
+}
+
 .replyingTo {
   color: var(--purple-600);
   font-weight: 500;
@@ -54,6 +60,16 @@ button {
   border-radius: 10px;
   text-align: justify;
   text-justify: inter-word;
+}
+
+.comment-wrapper {
+  width: 100%;
+}
+
+.comment {
+  /* \/ \/ doesn't work in all browsers */
+  grid-column: 1 / -1;
+  grid-row: 1 / 1;
 }
 
 .vote-container {

@@ -64,7 +64,7 @@ const Comment = ({
   };
 
   return (
-    <div className="comment-base">
+    <div className={`comment-base ${!data.replyingTo ? "comment" : ""}`}>
       <CommentVotes
         score={data.score}
         id={data.id}
@@ -72,7 +72,7 @@ const Comment = ({
         isCurrentUser={isCurrentUser}
         commentRating={commentRating}
       />
-      <div>
+      <div className="comment-wrapper">
         <div className="comment-top-row">
           <img className="avatar" src={data.user.image.png}></img>
           <p className="username">{data.user.username}</p>
@@ -80,7 +80,7 @@ const Comment = ({
           <p className="created-at">{data.createdAt}</p>
           {userButtons(isCurrentUser)}
         </div>
-        <p>
+        <p className="content">
           {isReplying(data.replyingTo)}
           {data.content}
         </p>
