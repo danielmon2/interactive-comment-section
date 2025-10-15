@@ -18,7 +18,7 @@ const Comment = ({
   const isReplying = (replyingTo) => {
     if (replyingTo) {
       return (
-        <a href="#" className="replyingTo">
+        <a href="#" className="comment__content__replying-to">
           {"@" + data.replyingTo + " "}
         </a>
       );
@@ -29,7 +29,7 @@ const Comment = ({
   const currentUserIndicator = (isCurrentUser) => {
     if (isCurrentUser) {
       return (
-        <div className="current-user-indicator">
+        <div className="comment__info__current-user-indicator">
           <span>you</span>
         </div>
       );
@@ -42,31 +42,37 @@ const Comment = ({
     if (!isCurrentUser) {
       return (
         <button
-          className="btn-base reply-btn gray-hover"
+          className="comment__btn--edit btn comment__btn purple-text white-bg gray-hover"
           onClick={() => onReply(data.id)}
         >
-          <img className="btn-base-icon" src="/assets/images/icon-reply.svg" />
+          <img
+            className="comment__btn__icon"
+            src="/assets/images/icon-reply.svg"
+          />
           Reply
         </button>
       );
     } else {
       return (
-        <div className="current-user-btns">
+        <div className="comment__current-user-btns">
           <button
-            className="btn-base delete-btn gray-hover"
+            className="btn comment__btn red-text white-bg gray-hover"
             onClick={() => onDelete(data.id)}
           >
             <img
-              className="btn-base-icon"
+              className="comment__btn__icon"
               src="/assets/images/icon-delete.svg"
             />
             Delete
           </button>
           <button
-            className="btn-base edit-btn gray-hover"
+            className="btn comment__btn purple-text white-bg gray-hover"
             onClick={() => onEdit(data.id)}
           >
-            <img className="btn-base-icon" src="/assets/images/icon-edit.svg" />
+            <img
+              className="comment__btn__icon"
+              src="/assets/images/icon-edit.svg"
+            />
             Edit
           </button>
         </div>
@@ -87,7 +93,9 @@ const Comment = ({
   };
 
   return (
-    <div className={`comment-base ${!data.replyingTo ? "comment" : ""}`}>
+    <div
+      className={`comment comment__grid ${!data.replyingTo ? "comment--full-row" : ""}`}
+    >
       <CommentVotes
         score={data.score}
         id={data.id}
@@ -95,33 +103,34 @@ const Comment = ({
         isCurrentUser={isCurrentUser}
         commentRating={commentRating}
       />
-      <div className="comment-wrapper">
-        <div className="comment-top-row">
-          <img className="avatar" src={data.user.image.png}></img>
-          <p className="username">{data.user.username}</p>
-          {currentUserIndicator(isCurrentUser)}
-          <p className="created-at">{data.createdAt}</p>
-          {userButtons(isCurrentUser)}
-        </div>
-        {data.editing ? (
-          <form onSubmit={handleEditSubmit}>
-            <ResponsiveTextarea
-              defaultValue={data.content}
-              autoFocus={true}
-              placeholder={"Add a comment..."}
-              name={"editTextarea"}
-            />
-            <button type="submit" className="btn-base update-btn">
-              Update
-            </button>
-          </form>
-        ) : (
-          <p className="content">
-            {isReplying(data.replyingTo)}
-            {data.content}
-          </p>
-        )}
+      <div className="comment__info">
+        <img className="comment__info__avatar" src={data.user.image.png}></img>
+        <p className="comment__info__username">{data.user.username}</p>
+        {currentUserIndicator(isCurrentUser)}
+        <p className="comment__info__created-at">{data.createdAt}</p>
       </div>
+      {userButtons(isCurrentUser)}
+      {data.editing ? (
+        <form onSubmit={handleEditSubmit} className="comment__editing-form">
+          <ResponsiveTextarea
+            defaultValue={data.content}
+            autoFocus={true}
+            placeholder={"Add a comment..."}
+            name={"editTextarea"}
+          />
+          <button
+            type="submit"
+            className="btn comment__btn editing-form__update-btn"
+          >
+            Update
+          </button>
+        </form>
+      ) : (
+        <p className="comment__content">
+          {isReplying(data.replyingTo)}
+          {data.content}
+        </p>
+      )}
     </div>
   );
 };

@@ -1,12 +1,4 @@
-.replyingTo {
-  color: var(--purple-600);
-  font-weight: 500;
-  font-size: 0.9rem;
-  text-decoration: none;
-}
-
-.comment-base {
-  display: flex;
+.comment {
   background-color: white;
   height: auto;
   width: 100%;
@@ -15,46 +7,56 @@
   border: none;
   border-radius: 10px;
   text-align: justify;
+  hyphens: auto;
   text-justify: inter-word;
 }
 
-.comment-wrapper {
-  width: 100%;
+.comment--full-row {
+  grid-column: 1 / 3;
+  grid-row: 1 / 2;
 }
 
-.comment {
-  /* \/ \/ doesn't work in all browsers */
-  grid-column: 1 / -1;
-  grid-row: 1 / 1;
+.comment__grid {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  grid-template-rows: auto 1fr;
 }
 
-.comment-top-row {
+/* Comment buttons */
+.comment__btn {
+  padding: 10px;
+  border-radius: 5px;
+  margin-left: auto;
+}
+
+.comment__btn__icon {
+  margin-right: 5px;
+  width: 12px;
+}
+
+.comment__btn--delete {
+  color: var(--pink-400);
+}
+
+/* Comment info */
+.comment__info {
   display: flex;
   align-items: center;
-  margin-bottom: 8px;
   width: 100%;
+  grid-column: 2 / 3;
 }
 
-.avatar {
+.comment__info__avatar {
   width: 25px;
   height: 25px;
 }
 
-.delete-btn {
-  color: var(--pink-400);
-}
-
-.edit-btn,
-.reply-btn {
-  color: var(--purple-600);
-}
-
-.username {
+.comment__info__username {
   font-weight: 500;
   margin-left: 15px;
 }
 
-.current-user-indicator {
+.comment__info__current-user-indicator {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -67,16 +69,30 @@
   margin-left: 5px;
 }
 
-.created-at {
+.comment__info__created-at {
   color: var(--grey-500);
   margin-left: 15px;
 }
 
-.current-user-btns {
+.comment__current-user-btns {
   margin-left: auto;
 }
 
-.update-btn {
+/* Comment content/editing area */
+.comment__content,
+.comment__editing-form {
+  grid-column: 2 / 4;
+  grid-row: 2 / 3;
+}
+
+.comment__content__replying-to {
+  color: var(--purple-600);
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.editing-form__update-btn {
   background-color: var(--purple-600);
   color: white;
   margin-left: auto;
