@@ -1,0 +1,85 @@
+.replyingTo {
+  color: var(--purple-600);
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.comment-base {
+  display: flex;
+  background-color: white;
+  height: auto;
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 20px;
+  border: none;
+  border-radius: 10px;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.comment-wrapper {
+  width: 100%;
+}
+
+.comment {
+  /* \/ \/ doesn't work in all browsers */
+  grid-column: 1 / -1;
+  grid-row: 1 / 1;
+}
+
+.comment-top-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+.avatar {
+  width: 25px;
+  height: 25px;
+}
+
+.delete-btn {
+  color: var(--pink-400);
+}
+
+.edit-btn,
+.reply-btn {
+  color: var(--purple-600);
+}
+
+.username {
+  font-weight: 500;
+  margin-left: 15px;
+}
+
+.current-user-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background-color: var(--purple-600);
+  font-size: 0.8rem;
+  width: 33px;
+  height: 18px;
+  border-radius: 2px;
+  margin-left: 5px;
+}
+
+.created-at {
+  color: var(--grey-500);
+  margin-left: 15px;
+}
+
+.current-user-btns {
+  margin-left: auto;
+}
+
+.update-btn {
+  background-color: var(--purple-600);
+  color: white;
+  margin-left: auto;
+  display: block;
+  margin-top: 10px;
+}

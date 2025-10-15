@@ -1,0 +1,25 @@
+.comment-section {
+  max-width: 750px;
+  margin: 50px 20px;
+}
+
+.comment-chain {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  grid-template-rows: auto auto;
+}
+
+.reply-container {
+  display: grid;
+  grid-column: 2 / 2;
+  grid-row: 2 / 2;
+}
+
+.line {
+  width: 1px;
+  background-color: var(--grey-100);
+  margin: 10px auto;
+  margin-bottom: 20px;
+  grid-column: 1 / 1;
+  grid-row: 2 / 2;
+}

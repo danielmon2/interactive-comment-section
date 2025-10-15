@@ -1,5 +1,6 @@
-import CommentVotes from "./CommentVotes";
-import ResponsiveTextarea from "./EditingTextarea";
+import CommentVotes from "../CommentScores/CommentScores";
+import ResponsiveTextarea from "../EditingTextarea";
+import "./Comment.css";
 
 const Comment = ({
   data,

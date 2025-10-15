@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import "./DeleteModal.css";
 
 const DeleteModal = ({ isOpen, onClose, onDelete }) => {
   const modalRef = useRef(null);

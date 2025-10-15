@@ -1,4 +1,5 @@
-import ResponsiveTextarea from "./EditingTextarea";
+import ResponsiveTextarea from "../EditingTextarea";
+import "./NewComment.css";
 
 const NewComment = ({ id, image, createNewComment, isReplying }) => {
   const handleFormSubmit = (event) => {

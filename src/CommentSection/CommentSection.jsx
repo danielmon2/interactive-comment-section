@@ -1,9 +1,12 @@
 import jsonData from "/data/data.json";
 // import jsonData from "/data/test.json";
-import Comment from "./Comment";
-import NewComment from "./NewComment";
 import { useState } from "react";
-import DeleteModal from "./DeleteModal";
+import "./CommentSection.css";
+
+import Comment from "../Comment/Comment";
+import NewComment from "../NewComment/NewComment";
+import DeleteModal from "../DeleteModal/DeleteModal";
+
 import changeCommentScore, {
   deleteReplyForm,
   deleteEditingForm,
@@ -13,7 +16,7 @@ import changeCommentScore, {
   createEditingForm,
   createReply,
   updateComment,
-} from "./ModifyCommentState";
+} from "../ModifyCommentState";
 
 const CommentSection = () => {
   const currentUser = jsonData.currentUser;

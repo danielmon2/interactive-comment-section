@@ -1,26 +1,3 @@
-/*
-  Change Score (search + prev value)
-
-  Delete comment (search)
-
-  Add new comments
-    Add temporary comment (search)
-
-    Replace it with a proper one (search)
-
-  Edit comment
-    Fetch content (search)
-
-    Change content (search)
-
-  id, optional: action, property;
-    search
-      copies the state but doesnt change it
-
-    Decide what to do with the copy
-
-  Selective deep copy func
-*/
 class UserComment {
   constructor(comments, content) {
     this.id = getNewId(comments);

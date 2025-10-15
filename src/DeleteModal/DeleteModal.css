@@ -1,0 +1,43 @@
+.delete-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: 350px;
+  border: none;
+  border-radius: 10px;
+  padding: 30px;
+
+  h1 {
+    font-weight: 500;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+  }
+
+  p {
+    color: var(--grey-500);
+    margin-bottom: 20px;
+  }
+
+  section {
+    display: flex;
+    justify-content: space-between;
+
+    .cancel-btn {
+      color: white;
+      background-color: var(--grey-500);
+      margin-right: 20px;
+      flex-basis: 50%;
+    }
+
+    .delete-btn-modal {
+      color: white;
+      background-color: var(--pink-400);
+      flex-basis: 50%;
+    }
+  }
+}
+
+.modal::backdrop {
+  background: rgb(0 0 0 / 50%);
+}

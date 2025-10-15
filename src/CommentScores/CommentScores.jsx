@@ -1,3 +1,5 @@
+import "./CommentScores.css";
+
 const CommentVotes = ({
   score,
   id,
