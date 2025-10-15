@@ -161,7 +161,6 @@ const getNewId = (comments) => {
 
 const deleteReplyForm = (comments, id) => {
   let sameId = false;
-  let newComment = false;
 
   for (const [index, el] of comments.entries()) {
     if (el.replies.length !== 0) {
@@ -169,12 +168,15 @@ const deleteReplyForm = (comments, id) => {
       const parentIndex = index;
 
       for (const [index, el] of parentEl.replies.entries()) {
-        if (el.id === id || parentEl.id === id) {
-          sameId = true;
-        }
-
         if (el.newComment) {
-          newComment = true;
+          if (index === 0 && parentEl.id === id) {
+            sameId = true;
+          } else if (index !== 0 && index < parentEl.replies.length) {
+            if (parentEl.replies[index - 1].id === id) {
+              sameId = true;
+            }
+          }
+
           const newComments = [...comments];
           newComments[parentIndex] = { ...comments[parentIndex] };
           newComments[parentIndex].replies = [...comments[parentIndex].replies];
@@ -185,7 +187,7 @@ const deleteReplyForm = (comments, id) => {
     }
   }
 
-  return sameId && newComment ? [comments, true] : [comments, false];
+  return [comments, sameId];
 };
 export default changeCommentState;
 export { getNewId, deleteReplyForm, UserComment };
