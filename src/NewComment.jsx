@@ -14,13 +14,13 @@ const NewComment = ({ id, image, createNewComment, isReplying }) => {
   return (
     <form onSubmit={handleFormSubmit} className="comment-base new-comment">
       <img className="new-comment-avatar" src={image.png}></img>
-      <input
+      <textarea
         autoFocus={isReplying}
         name="newCommentInput"
         className="new-comment-input"
         type="text"
         placeholder="Add a comment..."
-      />
+      ></textarea>
       <button type="submit" className="btn-base send-btn">
         SEND
       </button>

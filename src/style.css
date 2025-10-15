@@ -209,7 +209,8 @@ button {
   margin: 0 10px;
   border: 1px solid var(--grey-100);
   border-radius: 8px;
-  padding: 5px;
+  padding: 8px 15px;
+  resize: none;
 }
 
 .new-comment-input::placeholder {
