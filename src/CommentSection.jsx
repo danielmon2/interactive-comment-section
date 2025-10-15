@@ -4,7 +4,10 @@ import Comment from "./Comment";
 import NewComment from "./NewComment";
 import { useState } from "react";
 import DeleteModal from "./DeleteModal";
-import changeCommentState, { UserComment } from "./ModifyCommentState";
+import changeCommentState, {
+  deleteReplyForm,
+  UserComment,
+} from "./ModifyCommentState";
 
 const CommentSection = () => {
   const currentUser = jsonData.currentUser;
@@ -46,7 +49,12 @@ const CommentSection = () => {
   };
 
   const handleReply = (id) => {
-    setComments(changeCommentState(comments, id, "create_new"));
+    const [newComments, sameId] = deleteReplyForm(comments, id);
+    if (sameId === true) {
+      setComments(newComments);
+      return;
+    }
+    setComments(changeCommentState(newComments, id, "create_new"));
   };
 
   return (

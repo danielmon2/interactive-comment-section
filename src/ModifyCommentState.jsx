@@ -39,8 +39,8 @@ class UserComment {
 }
 
 class UserReply extends UserComment {
-  constructor(content, replyingTo) {
-    super(content);
+  constructor(comments, content, replyingTo) {
+    super(comments, content);
     this.replyingTo = replyingTo;
     delete this.replies;
   }
@@ -90,11 +90,11 @@ const changeCommentState = (comments, id, action, isCommentRated) => {
         newComments[index].score = newScore;
         return [newRatings, newComments];
       } else if (action === "create_new") {
+        const newComment = new UserComment(comments, "");
+        newComment.newComment = true;
+
         newComments[index].replies = [...comments[index].replies];
-        newComments[index].replies.splice(0, 0, {
-          newComment: true,
-          id: getNewId(comments),
-        });
+        newComments[index].replies.splice(0, 0, newComment);
       }
       return newComments;
     }
@@ -128,10 +128,10 @@ const changeCommentState = (comments, id, action, isCommentRated) => {
             newComments[parentIndex].replies[index].score = newScore;
             return [newRatings, newComments];
           } else if (action === "create_new") {
-            newComments[parentIndex].replies.splice(index + 1, 0, {
-              newComment: true,
-              id: getNewId(comments),
-            });
+            const newComment = new UserReply(comments, "", el.user.username);
+            newComment.newComment = true;
+
+            newComments[parentIndex].replies.splice(index + 1, 0, newComment);
           }
           return newComments;
         }
@@ -159,5 +159,33 @@ const getNewId = (comments) => {
   return biggestId + 1;
 };
 
+const deleteReplyForm = (comments, id) => {
+  let sameId = false;
+  let newComment = false;
+
+  for (const [index, el] of comments.entries()) {
+    if (el.replies.length !== 0) {
+      const parentEl = el;
+      const parentIndex = index;
+
+      for (const [index, el] of parentEl.replies.entries()) {
+        if (el.id === id || parentEl.id === id) {
+          sameId = true;
+        }
+
+        if (el.newComment) {
+          newComment = true;
+          const newComments = [...comments];
+          newComments[parentIndex] = { ...comments[parentIndex] };
+          newComments[parentIndex].replies = [...comments[parentIndex].replies];
+          newComments[parentIndex].replies.splice(index, 1);
+          return [newComments, sameId];
+        }
+      }
+    }
+  }
+
+  return sameId && newComment ? [comments, true] : [comments, false];
+};
 export default changeCommentState;
-export { getNewId, UserComment };
+export { getNewId, deleteReplyForm, UserComment };
