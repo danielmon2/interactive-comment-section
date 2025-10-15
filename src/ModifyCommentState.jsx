@@ -101,6 +101,9 @@ const changeCommentState = (comments, id, action, isCommentRated, input) => {
         } else {
           newComments[index].editing = true;
         }
+      } else if (action === "update") {
+        delete newComments[index].editing;
+        newComments[index].content = input;
       }
       return newComments;
     }
@@ -147,6 +150,9 @@ const changeCommentState = (comments, id, action, isCommentRated, input) => {
             } else {
               newComments[parentIndex].replies[index].editing = true;
             }
+          } else if (action === "update") {
+            delete newComments[parentIndex].replies[index].editing;
+            newComments[parentIndex].replies[index].content = input;
           }
           return newComments;
         }

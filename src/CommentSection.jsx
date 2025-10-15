@@ -64,6 +64,10 @@ const CommentSection = () => {
     setComments(changeCommentState(newComments, id, "create_new"));
   };
 
+  const handleEditedComment = (inputData, id) => {
+    setComments(changeCommentState(comments, id, "update", "", inputData));
+  };
+
   return (
     <div className="comment-section">
       {comments.map((el) => (
@@ -76,6 +80,7 @@ const CommentSection = () => {
             onDelete={handleOpenDeleteModal}
             onScoreChange={handleScoreChange}
             onEdit={handleEditing}
+            onSubmit={handleEditedComment}
             isEdited={el.editing}
             commentRating={isCommentRated[el.id]}
           />
@@ -104,6 +109,7 @@ const CommentSection = () => {
                         onDelete={handleOpenDeleteModal}
                         onScoreChange={handleScoreChange}
                         onEdit={handleEditing}
+                        onSubmit={handleEditedComment}
                         commentRating={isCommentRated[el.id]}
                       />
                     );

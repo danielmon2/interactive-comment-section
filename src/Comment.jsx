@@ -8,6 +8,7 @@ const Comment = ({
   onDelete,
   onScoreChange,
   onEdit,
+  onSubmit,
   commentRating,
 }) => {
   const isCurrentUser = data.user.username === currentUser;
@@ -74,6 +75,14 @@ const Comment = ({
 
   const handleEditSubmit = (event) => {
     event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const inputData = Object.fromEntries(formData.entries());
+
+    if (inputData.editTextarea !== "") {
+      onSubmit(inputData.editTextarea, data.id);
+      event.target.reset();
+    }
   };
 
   return (
