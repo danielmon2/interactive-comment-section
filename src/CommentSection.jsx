@@ -6,7 +6,10 @@ import { useState } from "react";
 import DeleteModal from "./DeleteModal";
 import changeCommentState, {
   deleteReplyForm,
-  UserComment,
+  deleteComment,
+  createComment,
+  createReplyForm,
+  createReply,
 } from "./ModifyCommentState";
 
 const CommentSection = () => {
@@ -25,7 +28,7 @@ const CommentSection = () => {
   };
 
   const handleDeleteUserComment = (id) => {
-    setComments(changeCommentState(comments, id, "delete"));
+    setComments(deleteComment(comments, id));
     setDeleteModalOpen([false, -1]);
   };
 
@@ -46,22 +49,19 @@ const CommentSection = () => {
 
   const handleNewComment = (inputData, id) => {
     if (id === 0) {
-      const newComment = new UserComment(comments, inputData);
-      const newComments = [...comments];
-      newComments.push(newComment);
-      setComments(newComments);
+      setComments(createComment(comments, inputData));
     } else {
-      setComments(changeCommentState(comments, id, "amend_new", "", inputData));
+      setComments(createReply(comments, id, inputData));
     }
   };
 
   const handleReply = (id) => {
     const [newComments, sameId] = deleteReplyForm(comments, id);
-    if (sameId === true) {
+    if (sameId) {
       setComments(newComments);
       return;
     }
-    setComments(changeCommentState(newComments, id, "create_new"));
+    setComments(createReplyForm(comments, id));
   };
 
   const handleEditedComment = (inputData, id) => {

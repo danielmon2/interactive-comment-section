@@ -78,9 +78,7 @@ const changeCommentState = (comments, id, action, isCommentRated, input) => {
       const newComments = [...comments];
       newComments[index] = { ...comments[index] };
 
-      if (action === "delete") {
-        newComments.splice(index, 1);
-      } else if (action === "upvote" || action === "downvote") {
+      if (action === "upvote" || action === "downvote") {
         const [newScore, newRatings] = calculateNewScore(
           isCommentRated,
           id,
@@ -89,12 +87,6 @@ const changeCommentState = (comments, id, action, isCommentRated, input) => {
         );
         newComments[index].score = newScore;
         return [newRatings, newComments];
-      } else if (action === "create_new") {
-        const newComment = new UserReply(comments, "", el.user.username);
-        newComment.newComment = true;
-
-        newComments[index].replies = [...comments[index].replies];
-        newComments[index].replies.splice(0, 0, newComment);
       } else if (action === "edit") {
         if (newComments[index].editing) {
           delete newComments[index].editing;
@@ -125,9 +117,7 @@ const changeCommentState = (comments, id, action, isCommentRated, input) => {
             ...comments[parentIndex].replies[index],
           };
 
-          if (action === "delete") {
-            newComments[parentIndex].replies.splice(index, 1);
-          } else if (action === "upvote" || action === "downvote") {
+          if (action === "upvote" || action === "downvote") {
             const [newScore, newRatings] = calculateNewScore(
               isCommentRated,
               id,
@@ -136,14 +126,6 @@ const changeCommentState = (comments, id, action, isCommentRated, input) => {
             );
             newComments[parentIndex].replies[index].score = newScore;
             return [newRatings, newComments];
-          } else if (action === "create_new") {
-            const newComment = new UserReply(comments, "", el.user.username);
-            newComment.newComment = true;
-
-            newComments[parentIndex].replies.splice(index + 1, 0, newComment);
-          } else if (action === "amend_new") {
-            delete newComments[parentIndex].replies[index].newComment;
-            newComments[parentIndex].replies[index].content = input;
           } else if (action === "edit") {
             if (newComments[parentIndex].replies[index].editing === true) {
               delete newComments[parentIndex].replies[index].editing;
@@ -159,6 +141,137 @@ const changeCommentState = (comments, id, action, isCommentRated, input) => {
       }
     }
   }
+};
+
+const createComment = (comments, inputData) => {
+  // Copy
+  const newComments = [...comments];
+  // Create new
+  const newComment = new UserComment(comments, inputData);
+  // Insert at the end
+  newComments.push(newComment);
+
+  return newComments;
+};
+
+const createReplyForm = (comments, id) => {
+  // Go through all comments to find a comment you're replying to
+  for (const [index, el] of comments.entries()) {
+    if (el.id === id) {
+      // Copy up to our id
+      const newComments = [...comments];
+      newComments[index] = { ...comments[index] };
+      newComments[index].replies = [...comments[index].replies];
+
+      // Create new reply
+      const replyingTo = el.user.username;
+      const newComment = new UserReply(comments, "", replyingTo);
+      // Add "newComment" property that will act as an indicator to create a form in place of this comment
+      newComment.newComment = true;
+
+      // Insert it at the beginning of the replies
+      newComments[index].replies.splice(0, 0, newComment);
+
+      return newComments;
+    }
+
+    // Go through all replies
+    if (el.replies.length !== 0) {
+      const parentEl = el.replies;
+      const parentIndex = index;
+
+      for (const [index, el] of parentEl.entries()) {
+        if (el.id === id) {
+          // Copy
+          const newComments = [...comments];
+          newComments[parentIndex] = { ...comments[parentIndex] };
+          newComments[parentIndex].replies = [...comments[parentIndex].replies];
+
+          // Create new
+          const replyingTo = el.user.username;
+          const newComment = new UserReply(comments, "", replyingTo);
+          // Add "newComment" property
+          newComment.newComment = true;
+
+          // Insert it immidiately after comment you're replying to in the "replies" array
+          newComments[parentIndex].replies.splice(index + 1, 0, newComment);
+
+          return newComments;
+        }
+      }
+    }
+  }
+
+  console.log("No such id");
+  return comments;
+};
+
+const createReply = (comments, id, inputData) => {
+  // Go through all comment's replies (replies can only be in "replies" array)
+  for (const [index, el] of comments.entries()) {
+    if (el.replies.length !== 0) {
+      const parentEl = el.replies;
+      const parentIndex = index;
+
+      for (const [index, el] of parentEl.entries()) {
+        if (el.id === id && el.newComment) {
+          // Copy
+          const newComments = [...comments];
+          newComments[parentIndex] = { ...comments[parentIndex] };
+          newComments[parentIndex].replies = [...comments[parentIndex].replies];
+          newComments[parentIndex].replies[index] = {
+            ...comments[parentIndex].replies[index],
+          };
+
+          // Delete "newComment" property (form indicator) and replace empty content with input
+          delete newComments[parentIndex].replies[index].newComment;
+          newComments[parentIndex].replies[index].content = inputData;
+
+          return newComments;
+        }
+      }
+    }
+  }
+
+  console.log("No such id");
+  return comments;
+};
+
+const deleteComment = (comments, id) => {
+  // Go through all comments
+  for (const [index, el] of comments.entries()) {
+    if (el.id === id) {
+      // Copy up to out id
+      const newComments = [...comments];
+      newComments[index] = { ...comments[index] };
+
+      // Delete it
+      newComments.splice(index, 1);
+      return newComments;
+    }
+
+    // Go through all replies
+    if (el.replies.length !== 0) {
+      const parentEl = el.replies;
+      const parentIndex = index;
+
+      for (const [index, el] of parentEl.entries()) {
+        if (el.id === id) {
+          // Copy
+          const newComments = [...comments];
+          newComments[parentIndex] = { ...comments[parentIndex] };
+          newComments[parentIndex].replies = [...comments[parentIndex].replies];
+
+          // Delete
+          newComments[parentIndex].replies.splice(index, 1);
+          return newComments;
+        }
+      }
+    }
+  }
+
+  console.log("No such id");
+  return comments;
 };
 
 const getNewId = (comments) => {
@@ -210,5 +323,13 @@ const deleteReplyForm = (comments, id) => {
 
   return [comments, sameId];
 };
+
 export default changeCommentState;
-export { getNewId, deleteReplyForm, UserComment };
+export {
+  getNewId,
+  deleteReplyForm,
+  deleteComment,
+  createComment,
+  createReplyForm,
+  createReply,
+};
