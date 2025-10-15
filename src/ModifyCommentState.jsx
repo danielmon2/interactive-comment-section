@@ -88,11 +88,11 @@ const changeCommentState = (comments, id, action, isCommentRated, input) => {
         newComments[index].score = newScore;
         return [newRatings, newComments];
       } else if (action === "edit") {
-        if (newComments[index].editing) {
-          delete newComments[index].editing;
-        } else {
-          newComments[index].editing = true;
-        }
+        // if (newComments[index].editing) {
+        //   delete newComments[index].editing;
+        // } else {
+        newComments[index].editing = true;
+        // }
       } else if (action === "update") {
         delete newComments[index].editing;
         newComments[index].content = input;
@@ -127,11 +127,11 @@ const changeCommentState = (comments, id, action, isCommentRated, input) => {
             newComments[parentIndex].replies[index].score = newScore;
             return [newRatings, newComments];
           } else if (action === "edit") {
-            if (newComments[parentIndex].replies[index].editing === true) {
-              delete newComments[parentIndex].replies[index].editing;
-            } else {
-              newComments[parentIndex].replies[index].editing = true;
-            }
+            // if (newComments[parentIndex].replies[index].editing === true) {
+            //   delete newComments[parentIndex].replies[index].editing;
+            // } else {
+            newComments[parentIndex].replies[index].editing = true;
+            // }
           } else if (action === "update") {
             delete newComments[parentIndex].replies[index].editing;
             newComments[parentIndex].replies[index].content = input;
@@ -311,10 +311,61 @@ const deleteReplyForm = (comments, id) => {
             }
           }
 
+          // Copy
           const newComments = [...comments];
           newComments[parentIndex] = { ...comments[parentIndex] };
           newComments[parentIndex].replies = [...comments[parentIndex].replies];
+          // Delete
           newComments[parentIndex].replies.splice(index, 1);
+
+          return [newComments, sameId];
+        }
+      }
+    }
+  }
+
+  return [comments, sameId];
+};
+
+const deleteEditingForm = (comments, id) => {
+  let sameId = false;
+
+  for (const [index, el] of comments.entries()) {
+    if (el.editing) {
+      // Check if this comment is already being edited
+      if (el.id === id) {
+        sameId = true;
+      }
+
+      // copy
+      const newComments = [...comments];
+      newComments[index] = { ...comments[index] };
+      // Delete
+      delete newComments[index].editing;
+
+      return [newComments, sameId];
+    }
+    if (el.replies.length !== 0) {
+      const parentEl = el.replies;
+      const parentIndex = index;
+
+      for (const [index, el] of parentEl.entries()) {
+        if (el.editing) {
+          // Check if this comment is already being edited
+          if (el.id === id) {
+            sameId = true;
+          }
+
+          // Copy
+          const newComments = [...comments];
+          newComments[parentIndex] = { ...comments[parentIndex] };
+          newComments[parentIndex].replies = [...comments[parentIndex].replies];
+          newComments[parentIndex].replies[index] = {
+            ...comments[parentIndex].replies[index],
+          };
+          // Delete
+          delete newComments[parentIndex].replies[index].editing;
+
           return [newComments, sameId];
         }
       }
@@ -328,6 +379,7 @@ export default changeCommentState;
 export {
   getNewId,
   deleteReplyForm,
+  deleteEditingForm,
   deleteComment,
   createComment,
   createReplyForm,

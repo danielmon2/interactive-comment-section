@@ -6,6 +6,7 @@ import { useState } from "react";
 import DeleteModal from "./DeleteModal";
 import changeCommentState, {
   deleteReplyForm,
+  deleteEditingForm,
   deleteComment,
   createComment,
   createReplyForm,
@@ -44,7 +45,12 @@ const CommentSection = () => {
   };
 
   const handleEditing = (id) => {
-    setComments(changeCommentState(comments, id, "edit"));
+    const [newComments, sameId] = deleteEditingForm(comments, id);
+    if (sameId) {
+      setComments(newComments);
+      return;
+    }
+    setComments(changeCommentState(newComments, id, "edit"));
   };
 
   const handleNewComment = (inputData, id) => {
