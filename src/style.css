@@ -28,7 +28,6 @@ body {
 button {
   cursor: pointer;
   border: none;
-  background: none;
 }
 
 .purple-filter {
@@ -40,20 +39,31 @@ button {
   background-color: var(--grey-100);
 }
 
-.disabled-btn {
+.btn {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.btn--disabled {
   cursor: default;
 }
 
-.btn-base {
-  background-color: white;
-  margin-left: auto;
-  font-weight: 500;
-  font-size: 0.9rem;
-  padding: 10px;
-  border-radius: 5px;
+.purple-text {
+  color: var(--purple-600);
 }
 
-.btn-base__icon {
-  margin-right: 5px;
-  width: 12px;
+.red-text {
+  color: var(--pink-400);
+}
+
+.white-bg {
+  background-color: white;
+}
+
+.textarea {
+  width: 100%;
+  border: 1px solid var(--grey-100);
+  border-radius: 8px;
+  padding: 8px 15px;
+  resize: none;
 }

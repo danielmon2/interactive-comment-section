@@ -12,6 +12,7 @@ const ResponsiveTextarea = ({
   const editTextareaRef = useRef(null);
   autoFocus = autoFocus || false;
   defaultValue = defaultValue || "";
+  className = className || "";
   minTextareaHeight = minTextareaHeight || 32;
 
   useEffect(() => {
@@ -30,7 +31,7 @@ const ResponsiveTextarea = ({
     <textarea
       ref={editTextareaRef}
       autoFocus={autoFocus}
-      className={`base-textarea ${className}`}
+      className={`textarea ${className}`}
       name={name}
       defaultValue={defaultValue}
       placeholder={placeholder}
