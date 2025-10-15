@@ -1,9 +1,10 @@
 import jsonData from "/data/data.json";
+// import jsonData from "/data/test.json";
 import Comment from "./Comment";
 import NewComment from "./NewComment";
 import { useState } from "react";
 import DeleteModal from "./DeleteModal";
-import changeCommentState, { calculateNewScore } from "./ModifyCommentState";
+import changeCommentState from "./ModifyCommentState";
 
 const CommentSection = () => {
   const currentUser = jsonData.currentUser;
@@ -36,6 +37,38 @@ const CommentSection = () => {
     setIsCommentRated(newRatings);
   };
 
+  const handleNewComment = (inputData) => {
+    const currentTime = "1 second ago";
+    const newId = getNewId();
+    const newComment = {
+      id: newId,
+      content: inputData,
+      createdAt: currentTime,
+      score: 0,
+      user: currentUser,
+      replies: [],
+    };
+
+    const newComments = [...comments];
+    newComments.push(newComment);
+    setComments(newComments);
+  };
+
+  const getNewId = () => {
+    const idArr = [];
+    for (const el of comments) {
+      idArr.push(el.id);
+      if (el.replies.length !== 0) {
+        const parentEl = el.replies;
+        for (const el of parentEl) {
+          idArr.push(el.id);
+        }
+      }
+    }
+
+    return idArr[idArr.length - 1] + 1;
+  };
+
   return (
     <div className="comment-section">
       {comments.map((el) => (
@@ -49,9 +82,9 @@ const CommentSection = () => {
             commentRating={isCommentRated[el.id]}
           />
           {el.replies.length !== 0 && (
-            <div className="reply-container">
+            <>
               <div className="line"></div>
-              <div>
+              <div className="reply-container">
                 {el.replies.map((el) => (
                   <Comment
                     key={el.id}
@@ -63,11 +96,14 @@ const CommentSection = () => {
                   />
                 ))}
               </div>
-            </div>
+            </>
           )}
         </div>
       ))}
-      <NewComment image={currentUser.image} />
+      <NewComment
+        image={currentUser.image}
+        createNewComment={handleNewComment}
+      />
       <DeleteModal
         isOpen={isDeleteModalOpen}
         onClose={handleCloseDeleteModal}
