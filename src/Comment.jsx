@@ -44,7 +44,10 @@ const Comment = ({
     } else {
       return (
         <div className="current-user-btns">
-          <button className="btn-base delete-btn gray-hover" onClick={onDelete}>
+          <button
+            className="btn-base delete-btn gray-hover"
+            onClick={() => onDelete(data.id)}
+          >
             <img
               className="btn-base-icon"
               src="/assets/images/icon-delete.svg"

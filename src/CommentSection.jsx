@@ -11,12 +11,18 @@ const CommentSection = () => {
   const [isCommentRated, setIsCommentRated] = useState({});
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
 
-  const handleOpenDeleteModal = () => {
-    setDeleteModalOpen(true);
+  // Id of the comment it was opened on
+  const handleOpenDeleteModal = (id) => {
+    setDeleteModalOpen([true, id]);
   };
 
   const handleCloseDeleteModal = () => {
-    setDeleteModalOpen(false);
+    setDeleteModalOpen([false, -1]);
+  };
+
+  const handleDeleteUserComment = (id) => {
+    setComments(changeCommentState(comments, id, "delete"));
+    setDeleteModalOpen([false, -1]);
   };
 
   const handleScoreChange = (id, action) => {
@@ -65,6 +71,7 @@ const CommentSection = () => {
       <DeleteModal
         isOpen={isDeleteModalOpen}
         onClose={handleCloseDeleteModal}
+        onDelete={handleDeleteUserComment}
       />
     </div>
   );

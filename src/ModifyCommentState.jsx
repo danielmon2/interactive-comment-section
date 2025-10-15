@@ -53,7 +53,9 @@ const changeCommentState = (comments, id, action, isCommentRated) => {
     if (el.id === id) {
       const newComments = [...comments];
       newComments[index] = { ...comments[index] };
-      if (action === "upvote" || action === "downvote") {
+      if (action === "delete") {
+        newComments.splice(index, 1);
+      } else if (action === "upvote" || action === "downvote") {
         const [newScore, newRatings] = calculateNewScore(
           isCommentRated,
           id,
@@ -82,7 +84,9 @@ const changeCommentState = (comments, id, action, isCommentRated) => {
           newComments[parentIndex].replies[index] = {
             ...comments[parentIndex].replies[index],
           };
-          if (action === "upvote" || action === "downvote") {
+          if (action === "delete") {
+            newComments[parentIndex].replies.splice(index, 1);
+          } else if (action === "upvote" || action === "downvote") {
             const [newScore, newRatings] = calculateNewScore(
               isCommentRated,
               id,
