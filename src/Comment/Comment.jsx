@@ -89,7 +89,7 @@ const Comment = ({
   };
 
   return (
-    <div
+    <article
       className={`comment comment__grid ${!data.replyingTo ? "comment--full-row" : ""}`}
     >
       <CommentVotes
@@ -127,7 +127,7 @@ const Comment = ({
           {data.content}
         </p>
       )}
-    </div>
+    </article>
   );
 };
 
