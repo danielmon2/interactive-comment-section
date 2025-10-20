@@ -22,7 +22,7 @@ const DeleteModal = ({ isOpen, onClose, onDelete }) => {
         Are you sure you want to delete this comment? This will remove a comment
         and can't be undone.
       </p>
-      <section className="delete-modal__btns">
+      <div className="delete-modal__btns">
         <button
           autoFocus
           onClick={onClose}
@@ -36,7 +36,7 @@ const DeleteModal = ({ isOpen, onClose, onDelete }) => {
         >
           YES, DELETE
         </button>
-      </section>
+      </div>
     </dialog>
   );
 };

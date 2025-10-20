@@ -78,9 +78,9 @@ const CommentSection = () => {
   };
 
   return (
-    <div className="comment-section">
+    <main className="comment-section">
       {comments.map((el) => (
-        <div className="comment-chain" key={"comment-chain_" + el.id}>
+        <section className="comment-chain" key={"comment-chain_" + el.id}>
           <Comment
             data={el}
             key={el.id}
@@ -96,7 +96,7 @@ const CommentSection = () => {
           {el.replies.length !== 0 && (
             <>
               <div className="line"></div>
-              <div className="reply-container">
+              <section className="reply-container">
                 {el.replies.map((el) => {
                   if (el.newComment) {
                     return (
@@ -124,10 +124,10 @@ const CommentSection = () => {
                     );
                   }
                 })}
-              </div>
+              </section>
             </>
           )}
-        </div>
+        </section>
       ))}
       <NewComment
         id={0}
@@ -140,7 +140,7 @@ const CommentSection = () => {
         onClose={handleCloseDeleteModal}
         onDelete={handleDeleteUserComment}
       />
-    </div>
+    </main>
   );
 };
 
