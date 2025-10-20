@@ -28,11 +28,7 @@ const Comment = ({
   // Add current user indicator
   const currentUserIndicator = (isCurrentUser) => {
     if (isCurrentUser) {
-      return (
-        <div className="comment__info__current-user-indicator">
-          <span>you</span>
-        </div>
-      );
+      return <span className="comment__info__current-user-indicator">you</span>;
     }
   };
 
@@ -103,12 +99,12 @@ const Comment = ({
         isCurrentUser={isCurrentUser}
         commentRating={commentRating}
       />
-      <div className="comment__info">
+      <p className="comment__info">
         <img className="comment__info__avatar" src={data.user.image.png}></img>
-        <p className="comment__info__username">{data.user.username}</p>
+        <span className="comment__info__username">{data.user.username}</span>
         {currentUserIndicator(isCurrentUser)}
-        <p className="comment__info__created-at">{data.createdAt}</p>
-      </div>
+        <span className="comment__info__created-at">{data.createdAt}</span>
+      </p>
       {userButtons(isCurrentUser)}
       {data.editing ? (
         <form onSubmit={handleEditSubmit} className="comment__editing-form">
