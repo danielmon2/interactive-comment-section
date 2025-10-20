@@ -20,11 +20,6 @@ Will be added:
 - Uses `localStorage` to save the current state in the browser that persists when the browser is refreshed.
 - Instead of using the `createdAt` strings from the `data.json` file, try using timestamps and dynamically track the time since the comment or reply was posted.
 
-### Screenshot
-
-![Desktop view](./screenshot_desktop.png)
-![Mobile view](./screenshot_mobile.png)
-
 ## My process
 
 ### Built with
@@ -36,5 +31,9 @@ Will be added:
 
 ### What I learned
 
-I better understood React philosophy. You don't modify the DOM directly. You modify the state and React changes the DOM for you. Coming from vanilla JS it was a little unintuitive, but it has many pros over the direct approach.
-I learned how to use State, Effect and Ref hooks.
+I better understood React philosophy. You don't modify the DOM directly. You modify the state and React changes the DOM for you. Coming from vanilla JS it was a little unintuitive, but it has many pros over the direct approach. I also learned how to use State, Effect and Ref hooks.
+
+### Screenshots of my solution
+
+![Desktop view](./screenshot_desktop.png)
+![Mobile view](./screenshot_mobile.png)
