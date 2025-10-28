@@ -240,33 +240,29 @@ const createEditingForm = (comments, id) => {
 
 const createReply = (comments, id, inputData) => {
   // Go through all comment's replies (replies can only be in "replies" array)
-  for (const [index, el] of comments.entries()) {
-    if (el.replies.length !== 0) {
-      const parentEl = el.replies;
-      const parentIndex = index;
-
-      for (const [index, el] of parentEl.entries()) {
-        if (el.id === id && el.replying) {
+  const newComments = comments.map((comment) => {
+    if (comment.replies.length !== 0) {
+      for (const [index, reply] of comment.replies.entries()) {
+        if (reply.id === id && reply.replying) {
           // Copy
-          const newComments = [...comments];
-          newComments[parentIndex] = { ...comments[parentIndex] };
-          newComments[parentIndex].replies = [...comments[parentIndex].replies];
-          newComments[parentIndex].replies[index] = {
-            ...comments[parentIndex].replies[index],
+          const newReplies = [...comment.replies];
+          // Delete "replying" property (form indicator)
+          delete newReplies[index].replying;
+          // Replace empty content with input
+          newReplies[index].content = inputData;
+
+          return {
+            ...comment,
+            replies: newReplies,
           };
-
-          // Delete "replying" property (form indicator) and replace empty content with input
-          delete newComments[parentIndex].replies[index].replying;
-          newComments[parentIndex].replies[index].content = inputData;
-
-          return newComments;
         }
       }
     }
-  }
 
-  console.log("No such id");
-  return comments;
+    return comment;
+  });
+
+  return newComments;
 };
 
 const deleteComment = (comments, id) => {
