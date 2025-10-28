@@ -23,6 +23,13 @@ class UserReply extends UserComment {
   }
 }
 
+class ReplyForm extends UserReply {
+  constructor(comments, replyingTo) {
+    super(comments, "", replyingTo);
+    this.replying = true;
+  }
+}
+
 const calculateNewScore = (isCommentRated, id, action, score) => {
   // Check if user already scored this comment
   if (id in isCommentRated) {
@@ -112,10 +119,9 @@ const createReplyForm = (comments, id) => {
   const newComments = comments.map((comment) => {
     if (comment.id === id) {
       // Create new reply
+      // It adds "replying" property that will act as an indicator to create a form in place of this comment
       const replyingTo = comment.user.username;
-      const newComment = new UserReply(comments, "", replyingTo);
-      // Add "replying" property that will act as an indicator to create a form in place of this comment
-      newComment.replying = true;
+      const newComment = new ReplyForm(comments, replyingTo);
 
       return {
         ...comment,
@@ -129,17 +135,12 @@ const createReplyForm = (comments, id) => {
         if (reply.id === id) {
           // Create new
           const replyingTo = comment.user.username;
-          const newComment = new UserReply(comments, "", replyingTo);
-          // Add "replying" property
-          newComment.replying = true;
+          const newComment = new ReplyForm(comments, replyingTo);
 
           // Insert it immediately after comment you're replying to in the "replies" array
           const newReplies = comment.replies.slice();
           newReplies.splice(index + 1, 0, newComment);
-          return {
-            ...comment,
-            replies: newReplies,
-          };
+          return { ...comment, replies: newReplies };
         }
       }
     }
@@ -198,44 +199,29 @@ const updateComment = (comments, id, inputData) => {
 
 const createEditingForm = (comments, id) => {
   // Go through all comments to find a comment you're replying to
-  for (const [index, el] of comments.entries()) {
-    if (el.id === id) {
-      // Copy up to our id
-      const newComments = [...comments];
-      newComments[index] = { ...comments[index] };
-
+  const newComments = comments.map((comment) => {
+    if (comment.id === id) {
       // Add "editing" property that will act as an indicator to create a form in place of this comment
-      newComments[index].editing = true;
-
-      return newComments;
+      return { ...comment, editing: true };
     }
 
     // Go through all replies
-    if (el.replies.length !== 0) {
-      const parentEl = el.replies;
-      const parentIndex = index;
-
-      for (const [index, el] of parentEl.entries()) {
-        if (el.id === id) {
-          // Copy
-          const newComments = [...comments];
-          newComments[parentIndex] = { ...comments[parentIndex] };
-          newComments[parentIndex].replies = [...comments[parentIndex].replies];
-          newComments[parentIndex].replies[index] = {
-            ...comments[parentIndex].replies[index],
-          };
-
+    if (comment.replies.length !== 0) {
+      for (const [index, reply] of comment.replies.entries()) {
+        if (reply.id === id) {
           // Add "editing" property
-          newComments[parentIndex].replies[index].editing = true;
+          const newReplies = [...comment.replies];
+          newReplies[index].editing = true;
 
-          return newComments;
+          return { ...comment, replies: newReplies };
         }
       }
     }
-  }
 
-  console.log("No such id");
-  return comments;
+    return comment;
+  });
+
+  return newComments;
 };
 
 const createReply = (comments, id, inputData) => {
@@ -251,10 +237,7 @@ const createReply = (comments, id, inputData) => {
           // Replace empty content with input
           newReplies[index].content = inputData;
 
-          return {
-            ...comment,
-            replies: newReplies,
-          };
+          return { ...comment, replies: newReplies };
         }
       }
     }
