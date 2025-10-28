@@ -109,54 +109,45 @@ const createComment = (comments, inputData) => {
 
 const createReplyForm = (comments, id) => {
   // Go through all comments to find a comment you're replying to
-  for (const [index, el] of comments.entries()) {
-    if (el.id === id) {
-      // Copy up to our id
-      const newComments = [...comments];
-      newComments[index] = { ...comments[index] };
-      newComments[index].replies = [...comments[index].replies];
-
+  const newComments = comments.map((comment) => {
+    if (comment.id === id) {
       // Create new reply
-      const replyingTo = el.user.username;
+      const replyingTo = comment.user.username;
       const newComment = new UserReply(comments, "", replyingTo);
       // Add "newComment" property that will act as an indicator to create a form in place of this comment
       newComment.newComment = true;
 
-      // Insert it at the beginning of the replies
-      newComments[index].replies.splice(0, 0, newComment);
-
-      return newComments;
+      return {
+        ...comment,
+        replies: [newComment, ...comment.replies],
+      };
     }
 
     // Go through all replies
-    if (el.replies.length !== 0) {
-      const parentEl = el.replies;
-      const parentIndex = index;
-
-      for (const [index, el] of parentEl.entries()) {
-        if (el.id === id) {
-          // Copy
-          const newComments = [...comments];
-          newComments[parentIndex] = { ...comments[parentIndex] };
-          newComments[parentIndex].replies = [...comments[parentIndex].replies];
-
+    else if (comment.replies.length !== 0) {
+      for (const [index, reply] of comment.replies.entries()) {
+        if (reply.id === id) {
           // Create new
-          const replyingTo = el.user.username;
+          const replyingTo = comment.user.username;
           const newComment = new UserReply(comments, "", replyingTo);
           // Add "newComment" property
           newComment.newComment = true;
 
-          // Insert it immidiately after comment you're replying to in the "replies" array
-          newComments[parentIndex].replies.splice(index + 1, 0, newComment);
-
-          return newComments;
+          // Insert it immediately after comment you're replying to in the "replies" array
+          const newReplies = comment.replies.slice();
+          newReplies.splice(index + 1, 0, newComment);
+          return {
+            ...comment,
+            replies: newReplies,
+          };
         }
       }
     }
-  }
 
-  console.log("No such id");
-  return comments;
+    return comment;
+  });
+
+  return newComments;
 };
 
 const updateComment = (comments, id, inputData) => {
