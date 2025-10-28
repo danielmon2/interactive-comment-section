@@ -79,6 +79,7 @@ const CommentSection = () => {
 
   return (
     <main className="comment-section">
+      {/* {console.log(comments)} */}
       {comments.map((el) => (
         <section className="comment-chain" key={"comment-chain_" + el.id}>
           <Comment
@@ -98,7 +99,7 @@ const CommentSection = () => {
               <div className="line"></div>
               <section className="reply-container">
                 {el.replies.map((el) => {
-                  if (el.newComment) {
+                  if (el.replying) {
                     return (
                       <NewComment
                         key={el.id}

@@ -114,8 +114,8 @@ const createReplyForm = (comments, id) => {
       // Create new reply
       const replyingTo = comment.user.username;
       const newComment = new UserReply(comments, "", replyingTo);
-      // Add "newComment" property that will act as an indicator to create a form in place of this comment
-      newComment.newComment = true;
+      // Add "replying" property that will act as an indicator to create a form in place of this comment
+      newComment.replying = true;
 
       return {
         ...comment,
@@ -130,8 +130,8 @@ const createReplyForm = (comments, id) => {
           // Create new
           const replyingTo = comment.user.username;
           const newComment = new UserReply(comments, "", replyingTo);
-          // Add "newComment" property
-          newComment.newComment = true;
+          // Add "replying" property
+          newComment.replying = true;
 
           // Insert it immediately after comment you're replying to in the "replies" array
           const newReplies = comment.replies.slice();
@@ -225,7 +225,7 @@ const createEditingForm = (comments, id) => {
             ...comments[parentIndex].replies[index],
           };
 
-          // Add "newComment" property
+          // Add "editing" property
           newComments[parentIndex].replies[index].editing = true;
 
           return newComments;
@@ -246,7 +246,7 @@ const createReply = (comments, id, inputData) => {
       const parentIndex = index;
 
       for (const [index, el] of parentEl.entries()) {
-        if (el.id === id && el.newComment) {
+        if (el.id === id && el.replying) {
           // Copy
           const newComments = [...comments];
           newComments[parentIndex] = { ...comments[parentIndex] };
@@ -255,8 +255,8 @@ const createReply = (comments, id, inputData) => {
             ...comments[parentIndex].replies[index],
           };
 
-          // Delete "newComment" property (form indicator) and replace empty content with input
-          delete newComments[parentIndex].replies[index].newComment;
+          // Delete "replying" property (form indicator) and replace empty content with input
+          delete newComments[parentIndex].replies[index].replying;
           newComments[parentIndex].replies[index].content = inputData;
 
           return newComments;
@@ -334,7 +334,7 @@ const deleteReplyForm = (comments, id) => {
       const parentIndex = index;
 
       for (const [index, el] of parentEl.replies.entries()) {
-        if (el.newComment) {
+        if (el.replying) {
           if (index === 0 && parentEl.id === id) {
             sameId = true;
           } else if (index !== 0 && index < parentEl.replies.length) {
