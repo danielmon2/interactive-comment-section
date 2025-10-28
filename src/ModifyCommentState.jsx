@@ -267,38 +267,19 @@ const createReply = (comments, id, inputData) => {
 
 const deleteComment = (comments, id) => {
   // Go through all comments
-  for (const [index, el] of comments.entries()) {
-    if (el.id === id) {
-      // Copy up to out id
-      const newComments = [...comments];
-      newComments[index] = { ...comments[index] };
-
-      // Delete it
-      newComments.splice(index, 1);
-      return newComments;
-    }
-
-    // Go through all replies
-    if (el.replies.length !== 0) {
-      const parentEl = el.replies;
-      const parentIndex = index;
-
-      for (const [index, el] of parentEl.entries()) {
-        if (el.id === id) {
-          // Copy
-          const newComments = [...comments];
-          newComments[parentIndex] = { ...comments[parentIndex] };
-          newComments[parentIndex].replies = [...comments[parentIndex].replies];
-
-          // Delete
-          newComments[parentIndex].replies.splice(index, 1);
-          return newComments;
-        }
+  const newComments = comments.filter((comment) => comment.id !== id);
+  if (newComments.length !== comments.length) {
+    return newComments;
+  } else {
+    for (const [index, comment] of newComments.entries()) {
+      const newReplies = comment.replies.filter((reply) => reply.id !== id);
+      if (newReplies.length !== newComments[index].replies.length) {
+        newComments[index].replies = newReplies;
+        return newComments;
       }
     }
   }
 
-  console.log("No such id");
   return comments;
 };
 
