@@ -250,16 +250,24 @@ const createReply = (comments, id, inputData) => {
 
 const deleteComment = (comments, id) => {
   // Go through all comments
-  const newComments = comments.filter((comment) => comment.id !== id);
-  if (newComments.length !== comments.length) {
-    return newComments;
-  } else {
-    for (const [index, comment] of newComments.entries()) {
+  for (const [index, comment] of comments.entries()) {
+    if (comment.id === id) {
+      // Filter out that comment
+      const newComments = comments.filter((comment) => comment.id !== id);
+      return newComments;
+    }
+    // Go through all replies
+    else if (comment.replies.length !== 0) {
       const parentIndex = index;
       for (const reply of comment.replies) {
         if (reply.id === id) {
+          // Filter out that reply
           const newReplies = comment.replies.filter((reply) => reply.id !== id);
+          // Copy "comments" array
+          const newComments = [...comments];
+          newComments[parentIndex] = [...comments[parentIndex]];
           newComments[parentIndex].replies = newReplies;
+
           return newComments;
         }
       }
@@ -291,27 +299,28 @@ const getNewId = (comments) => {
 const deleteReplyForm = (comments, id) => {
   let sameId = false;
 
-  for (const [index, el] of comments.entries()) {
-    if (el.replies.length !== 0) {
-      const parentEl = el;
+  for (const [index, comment] of comments.entries()) {
+    if (comment.replies.length !== 0) {
       const parentIndex = index;
 
-      for (const [index, el] of parentEl.replies.entries()) {
-        if (el.replying) {
-          if (index === 0 && parentEl.id === id) {
+      for (const [index, reply] of comment.replies.entries()) {
+        if (reply.replying) {
+          // If reply form is first in reply section and id is the comment this reply section belongs to - same id
+          if (index === 0 && comment.id === id) {
             sameId = true;
-          } else if (index !== 0 && index < parentEl.replies.length) {
-            if (parentEl.replies[index - 1].id === id) {
+          } else if (index !== 0 && index < comment.replies.length) {
+            // If id of the reply right before this reply form is the right id - same id
+            if (comment.replies[index - 1].id === id) {
               sameId = true;
             }
           }
 
+          // Filter reply form out
+          const newReplies = comment.replies.filter((reply, i) => i !== index);
           // Copy
           const newComments = [...comments];
           newComments[parentIndex] = { ...comments[parentIndex] };
-          newComments[parentIndex].replies = [...comments[parentIndex].replies];
-          // Delete
-          newComments[parentIndex].replies.splice(index, 1);
+          newComments[parentIndex].replies = newReplies;
 
           return [newComments, sameId];
         }

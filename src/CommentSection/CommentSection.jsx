@@ -70,7 +70,7 @@ const CommentSection = () => {
       setComments(newComments);
       return;
     }
-    setComments(createReplyForm(comments, id));
+    setComments(createReplyForm(newComments, id));
   };
 
   const handleEditedComment = (inputData, id) => {
@@ -79,7 +79,6 @@ const CommentSection = () => {
 
   return (
     <main className="comment-section">
-      {/* {console.log(comments)} */}
       {comments.map((el) => (
         <section className="comment-chain" key={"comment-chain_" + el.id}>
           <Comment
