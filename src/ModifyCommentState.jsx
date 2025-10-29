@@ -255,10 +255,13 @@ const deleteComment = (comments, id) => {
     return newComments;
   } else {
     for (const [index, comment] of newComments.entries()) {
-      const newReplies = comment.replies.filter((reply) => reply.id !== id);
-      if (newReplies.length !== newComments[index].replies.length) {
-        newComments[index].replies = newReplies;
-        return newComments;
+      const parentIndex = index;
+      for (const reply of comment.replies) {
+        if (reply.id === id) {
+          const newReplies = comment.replies.filter((reply) => reply.id !== id);
+          newComments[parentIndex].replies = newReplies;
+          return newComments;
+        }
       }
     }
   }
