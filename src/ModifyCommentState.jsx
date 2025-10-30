@@ -153,48 +153,37 @@ const createReplyForm = (comments, id) => {
 
 const updateComment = (comments, id, inputData) => {
   // Go through all comments to find a comment you're replying to
-  for (const [index, el] of comments.entries()) {
-    if (el.id === id) {
-      // Copy up to our id
-      const newComments = [...comments];
-      newComments[index] = { ...comments[index] };
-
+  const newComments = comments.map((comment) => {
+    if (comment.id === id) {
+      const newComment = { ...comment };
       // Delete editing form indicator
-      delete newComments[index].editing;
+      delete newComment.editing;
       // Change contents
-      newComments[index].content = inputData;
+      newComment.content = inputData;
 
-      return newComments;
+      return newComment;
     }
 
     // Go through all replies
-    if (el.replies.length !== 0) {
-      const parentEl = el.replies;
-      const parentIndex = index;
-
-      for (const [index, el] of parentEl.entries()) {
-        if (el.id === id) {
+    else if (comment.replies.length !== 0) {
+      for (const [index, reply] of comment.replies.entries()) {
+        if (reply.id === id) {
           // Copy
-          const newComments = [...comments];
-          newComments[parentIndex] = { ...comments[parentIndex] };
-          newComments[parentIndex].replies = [...comments[parentIndex].replies];
-          newComments[parentIndex].replies[index] = {
-            ...comments[parentIndex].replies[index],
-          };
-
+          const newReplies = [...comment.replies];
+          newReplies[index] = { ...comment.replies[index] };
           // Delete editing form indicator
-          delete newComments[parentIndex].replies[index].editing;
+          delete newReplies[index].editing;
           // Change contents
-          newComments[parentIndex].replies[index].content = inputData;
+          newReplies[index].content = inputData;
 
-          return newComments;
+          return { ...comment, replies: newReplies };
         }
       }
     }
-  }
+    return comment;
+  });
 
-  console.log("No such id");
-  return comments;
+  return newComments;
 };
 
 const createEditingForm = (comments, id) => {
