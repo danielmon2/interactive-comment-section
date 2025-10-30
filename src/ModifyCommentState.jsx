@@ -138,7 +138,7 @@ const createReplyForm = (comments, id) => {
           const newComment = new ReplyForm(comments, replyingTo);
 
           // Insert it immediately after comment you're replying to in the "replies" array
-          const newReplies = comment.replies.slice();
+          const newReplies = [...comment.replies];
           newReplies.splice(index + 1, 0, newComment);
           return { ...comment, replies: newReplies };
         }
@@ -232,6 +232,7 @@ const createReply = (comments, id, inputData) => {
         if (reply.id === id && reply.replying) {
           // Copy
           const newReplies = [...comment.replies];
+          newReplies[index] = { ...comment.replies[index] };
           // Delete "replying" property (form indicator)
           delete newReplies[index].replying;
           // Replace empty content with input
@@ -334,49 +335,42 @@ const deleteReplyForm = (comments, id) => {
 const deleteEditingForm = (comments, id) => {
   let sameId = false;
 
-  for (const [index, el] of comments.entries()) {
-    if (el.editing) {
+  const newComments = comments.map((comment) => {
+    if (comment.editing) {
       // Check if this comment is already being edited
-      if (el.id === id) {
+      if (comment.id === id) {
         sameId = true;
       }
 
-      // copy
-      const newComments = [...comments];
-      newComments[index] = { ...comments[index] };
       // Delete
-      delete newComments[index].editing;
-
-      return [newComments, sameId];
+      const { editing, ...newComment } = comment;
+      return newComment;
     }
-    if (el.replies.length !== 0) {
-      const parentEl = el.replies;
-      const parentIndex = index;
 
-      for (const [index, el] of parentEl.entries()) {
-        if (el.editing) {
+    // Go through all replies
+    else if (comment.replies.length !== 0) {
+      for (const [index, reply] of comment.replies.entries()) {
+        if (reply.editing) {
           // Check if this comment is already being edited
-          if (el.id === id) {
+          if (reply.id === id) {
             sameId = true;
           }
 
           // Copy
-          const newComments = [...comments];
-          newComments[parentIndex] = { ...comments[parentIndex] };
-          newComments[parentIndex].replies = [...comments[parentIndex].replies];
-          newComments[parentIndex].replies[index] = {
-            ...comments[parentIndex].replies[index],
-          };
+          const newReplies = [...comment.replies];
+          newReplies[index] = { ...comment.replies[index] };
           // Delete
-          delete newComments[parentIndex].replies[index].editing;
+          delete newReplies[index].editing;
 
-          return [newComments, sameId];
+          return { ...comment, replies: newReplies };
         }
       }
     }
-  }
 
-  return [comments, sameId];
+    return comment;
+  });
+
+  return [newComments, sameId];
 };
 
 export default changeCommentScore;
