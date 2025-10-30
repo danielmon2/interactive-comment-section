@@ -79,30 +79,30 @@ const CommentSection = () => {
 
   return (
     <main className="comment-section">
-      {comments.map((el) => (
-        <section className="comment-chain" key={"comment-chain_" + el.id}>
+      {comments.map((comment) => (
+        <section className="comment-chain" key={"comment-chain_" + comment.id}>
           <Comment
-            data={el}
-            key={el.id}
+            data={comment}
+            key={comment.id}
             currentUser={currentUser.username}
             onReply={handleReply}
             onDelete={handleOpenDeleteModal}
             onScoreChange={handleScoreChange}
             onEdit={handleEditing}
             onSubmit={handleEditedComment}
-            isEdited={el.editing}
-            commentRating={isCommentRated[el.id]}
+            isEdited={comment.editing}
+            commentRating={isCommentRated[comment.id]}
           />
-          {el.replies.length !== 0 && (
+          {comment.replies.length !== 0 && (
             <>
               <div className="line"></div>
               <section className="reply-container">
-                {el.replies.map((el) => {
-                  if (el.replying) {
+                {comment.replies.map((reply) => {
+                  if (reply.replying) {
                     return (
                       <NewComment
-                        key={el.id}
-                        id={el.id}
+                        key={reply.id}
+                        id={reply.id}
                         image={currentUser.image}
                         createNewComment={handleNewComment}
                         isReplying={true}
@@ -111,15 +111,15 @@ const CommentSection = () => {
                   } else {
                     return (
                       <Comment
-                        key={el.id}
-                        data={el}
+                        key={reply.id}
+                        data={reply}
                         currentUser={currentUser.username}
                         onReply={handleReply}
                         onDelete={handleOpenDeleteModal}
                         onScoreChange={handleScoreChange}
                         onEdit={handleEditing}
                         onSubmit={handleEditedComment}
-                        commentRating={isCommentRated[el.id]}
+                        commentRating={isCommentRated[reply.id]}
                       />
                     );
                   }
