@@ -57,50 +57,44 @@ const calculateNewScore = (isCommentRated, id, action, score) => {
 
 const changeCommentScore = (comments, id, action, isCommentRated) => {
   // Entries() because it doesn't work without it (if array has objects in it)
-  for (const [index, el] of comments.entries()) {
-    if (el.id === id) {
-      const newComments = [...comments];
-      newComments[index] = { ...comments[index] };
-
-      const [newScore, newRatings] = calculateNewScore(
+  let newRatings;
+  const newComments = comments.map((comment) => {
+    if (comment.id === id) {
+      let newScore;
+      [newScore, newRatings] = calculateNewScore(
         isCommentRated,
         id,
         action,
-        newComments[index].score,
+        comment.score,
       );
-      newComments[index].score = newScore;
-      return [newRatings, newComments];
-    }
-    if (el.replies.length !== 0) {
-      const parentIndex = index;
-      const parentEl = el.replies;
-      for (const [index, el] of parentEl.entries()) {
-        if (el.id === id) {
+      return { ...comment, score: newScore };
+    } else if (comment.replies.length !== 0) {
+      for (const [index, reply] of comment.replies.entries()) {
+        if (reply.id === id) {
           // Shallow copy (spread) makes a copy of the top-most layer.
           // Objects, arrays even at the top-most layer are treated as nested
           // If you want to change something inside one you have to copy it (if you want to replace it you don't)
           // I make a shallow copy of each layer I go down
           // Comments array -> specific comment object -> array of all replies of that comment -> specific reply object
           // I'm assuming this will be faster than a deep copy, because here you copy only necessary items
-          const newComments = [...comments];
-          newComments[parentIndex] = { ...comments[parentIndex] };
-          newComments[parentIndex].replies = [...comments[parentIndex].replies];
-          newComments[parentIndex].replies[index] = {
-            ...comments[parentIndex].replies[index],
-          };
-
-          const [newScore, newRatings] = calculateNewScore(
+          let newScore;
+          [newScore, newRatings] = calculateNewScore(
             isCommentRated,
             id,
             action,
-            newComments[parentIndex].replies[index].score,
+            comment.replies[index].score,
           );
-          newComments[parentIndex].replies[index].score = newScore;
-          return [newRatings, newComments];
+          const newReplies = [...comment.replies];
+          newReplies[index] = { ...comment.replies[index] };
+          newReplies[index].score = newScore;
+          return { ...comment, replies: newReplies };
         }
       }
     }
-  }
+    return comment;
+  });
+
+  return [newRatings, newComments];
 };
 
 const createComment = (comments, inputData) => {
