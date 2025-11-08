@@ -249,7 +249,7 @@ const deleteComment = (comments, id) => {
           const newReplies = comment.replies.filter((reply) => reply.id !== id);
           // Copy "comments" array
           const newComments = [...comments];
-          newComments[parentIndex] = [...comments[parentIndex]];
+          newComments[parentIndex] = { ...comments[parentIndex] };
           newComments[parentIndex].replies = newReplies;
 
           return newComments;
