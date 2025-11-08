@@ -1,4 +1,5 @@
 import CommentVotes from "../CommentScores/CommentScores";
+import CommentUserButton from "../CommentUserButton";
 import ResponsiveTextarea from "../EditingTextarea";
 import "./Comment.css";
 
@@ -32,50 +33,6 @@ const Comment = ({
     }
   };
 
-  // Use different buttons if the current comment is made by the current user
-  // "Reply" for others and "delete" and "edit" for current user
-  const userButtons = (isCurrentUser) => {
-    if (!isCurrentUser) {
-      return (
-        <button
-          className="comment__btn--edit btn comment__btn purple-text white-bg gray-hover"
-          onClick={() => onReply(data.id)}
-        >
-          <img
-            className="comment__btn__icon"
-            src="/assets/images/icon-reply.svg"
-          />
-          Reply
-        </button>
-      );
-    } else {
-      return (
-        <div className="comment__current-user-btns">
-          <button
-            className="btn comment__btn red-text white-bg gray-hover"
-            onClick={() => onDelete(data.id)}
-          >
-            <img
-              className="comment__btn__icon"
-              src="/assets/images/icon-delete.svg"
-            />
-            Delete
-          </button>
-          <button
-            className="btn comment__btn purple-text white-bg gray-hover"
-            onClick={() => onEdit(data.id)}
-          >
-            <img
-              className="comment__btn__icon"
-              src="/assets/images/icon-edit.svg"
-            />
-            Edit
-          </button>
-        </div>
-      );
-    }
-  };
-
   const handleEditSubmit = (event) => {
     event.preventDefault();
 
@@ -88,10 +45,13 @@ const Comment = ({
     }
   };
 
+  let commentClassName = "comment comment__grid";
+  if (!data.replyingTo) {
+    commentClassName = commentClassName + " comment--full-row";
+  }
+
   return (
-    <article
-      className={`comment comment__grid ${!data.replyingTo ? "comment--full-row" : ""}`}
-    >
+    <article className={commentClassName}>
       <CommentVotes
         score={data.score}
         id={data.id}
@@ -105,7 +65,13 @@ const Comment = ({
         {currentUserIndicator(isCurrentUser)}
         <span className="comment__info__created-at">{data.createdAt}</span>
       </p>
-      {userButtons(isCurrentUser)}
+      <CommentUserButton
+        isCurrentUser={isCurrentUser}
+        onDelete={onDelete}
+        onEdit={onEdit}
+        onReply={onReply}
+        id={data.id}
+      />
       {data.editing ? (
         <form onSubmit={handleEditSubmit} className="comment__editing-form">
           <ResponsiveTextarea
