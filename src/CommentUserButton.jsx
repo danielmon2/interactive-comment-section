@@ -12,37 +12,26 @@ const CommentUserButton = ({
   if (!isCurrentUser) {
     return (
       <button
-        className="comment__btn--edit btn comment__btn purple-text white-bg gray-hover"
         onClick={() => onReply(id)}
       >
-        <img
-          className="comment__btn__icon"
-          src="/assets/images/icon-reply.svg"
-        />
+        <img className="comment__btn__icon" src="images/icon-reply.svg" />
         Reply
       </button>
     );
   } else {
     return (
-      <div className="comment__current-user-btns">
         <button
           className="btn comment__btn red-text white-bg gray-hover"
           onClick={() => onDelete(id)}
         >
-          <img
-            className="comment__btn__icon"
-            src="/assets/images/icon-delete.svg"
-          />
+          <img className="comment__btn__icon" src="images/icon-delete.svg" />
           Delete
         </button>
         <button
           className="btn comment__btn purple-text white-bg gray-hover"
           onClick={() => onEdit(id)}
         >
-          <img
-            className="comment__btn__icon"
-            src="/assets/images/icon-edit.svg"
-          />
+          <img className="comment__btn__icon" src="images/icon-edit.svg" />
           Edit
         </button>
       </div>

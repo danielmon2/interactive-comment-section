@@ -6,8 +6,8 @@ class UserComment {
     this.score = 0;
     this.user = {
       image: {
-        png: "./assets/images/avatars/image-juliusomo.png",
-        webp: "./assets/images/avatars/image-juliusomo.webp",
+        png: "./avatars/image-juliusomo.png",
+        webp: "./avatars/image-juliusomo.webp",
       },
       username: "juliusomo",
     };

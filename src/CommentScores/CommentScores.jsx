@@ -31,7 +31,7 @@ const CommentVotes = ({
       >
         <img
           className={commentRating === "upvote" ? "purple-filter" : ""}
-          src="/assets/images/icon-plus.svg"
+          src="images/icon-plus.svg"
         />
       </button>
 
@@ -46,7 +46,7 @@ const CommentVotes = ({
       >
         <img
           className={commentRating === "downvote" ? "purple-filter" : ""}
-          src="/assets/images/icon-minus.svg"
+          src="images/icon-minus.svg"
         />
       </button>
     </div>
