@@ -35,16 +35,6 @@
   color: var(--pink-400);
 }
 
-.comment__btn--edit {
-  align-self: center;
-  justify-self: end;
-}
-
-.comment__current-user-btns {
-  align-self: center;
-  justify-self: end;
-}
-
 /* Comment info */
 .comment__info {
   display: flex;
@@ -123,8 +113,14 @@
     grid-row: 2 / 3;
   }
 
-  .comment__btn--edit {
+  .comment__btn--reply {
     grid-column: 2 / 3;
     grid-row: 3 / 4;
+  }
+
+  .comment__btn--user,
+  .comment__btn--reply {
+    align-self: center;
+    justify-self: end;
   }
 }

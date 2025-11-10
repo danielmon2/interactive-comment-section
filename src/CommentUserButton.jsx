@@ -12,6 +12,7 @@ const CommentUserButton = ({
   if (!isCurrentUser) {
     return (
       <button
+        className="comment__btn--reply btn comment__btn purple-text white-bg gray-hover"
         onClick={() => onReply(id)}
       >
         <img className="comment__btn__icon" src="images/icon-reply.svg" />
@@ -20,6 +21,7 @@ const CommentUserButton = ({
     );
   } else {
     return (
+      <div className="comment__btn--user">
         <button
           className="btn comment__btn red-text white-bg gray-hover"
           onClick={() => onDelete(id)}
