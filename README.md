@@ -1,4 +1,4 @@
-Live Site URL: [Add live site URL here](https://your-live-site-url.com)
+Live Site URL: [GitHub Pages](https://danielmon2.github.io/interactive-comment-section/)
 
 # Frontend Mentor - Interactive comments section solution
 
